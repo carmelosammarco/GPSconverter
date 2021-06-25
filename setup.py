@@ -31,7 +31,8 @@ setup(name='GPSconverter',
         'Flask >= 2.0.1',
         'Pillow >= 8.2.0',
         'simplekml >= 1.3.5',
-        'tkmacosx >= 1.0.3'
+        'tkmacosx >= 1.0.3',
+        'html2image >= 1.1.3'
         
         
       ],
