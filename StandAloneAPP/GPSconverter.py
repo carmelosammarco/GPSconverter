@@ -19,7 +19,6 @@ from tkinter import messagebox
 from tkinter import scrolledtext
 from html2image import Html2Image 
 import json
-#from collections import OrderedDict
 import simplekml
 from tkmacosx import Button
 
@@ -183,16 +182,15 @@ def main():
         listcoor = []
         for record in json_result:
             listcoor.append([record['Longitude'], record['Latitude']])
-        
         kml = simplekml.Kml()
         ls = kml.newlinestring(name='A LineString')
-
         ls.coords = listcoor
         ls.extrude = 1
         ls.altitudemode = simplekml.AltitudeMode.relativetoground
         ls.style.linestyle.width = 5
         ls.style.linestyle.color = simplekml.Color.blue
         kml.save(selfolder.Home_dir +'/Output.kml')
+        kml.save(selfolder.Home_dir +'/Output.kmz')
         os.remove(selfolder.Home_dir + "/Output.csv")
 
 
@@ -314,7 +312,7 @@ if __name__ == '__main__':
     btn = Button(window, text="TO CSV", bg="orange", command=toCSV) 
     btn.grid(column=0, row=11)
     ###
-    btn = Button(window, text="TO KML", bg="orange", command=toKmz) 
+    btn = Button(window, text="TO KML/KMZ", bg="orange", command=toKmz) 
     btn.grid(column=0, row=12)
     ###
     btn = Button(window, text="TO JSON", bg="orange", command=toJSON) 
