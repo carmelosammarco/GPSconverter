@@ -5,7 +5,7 @@
 
  The idea to developed this **Python based application for manipulating/view GPS data** borned while I was doing some trekking because I wanted a fast way to convert all the file saved and plot them automatically. As many development and during the process I added many other features :) Hope you like it! 
 
-It Can be usefull when:
+It can be usefull when:
 
 - You want to visualise your GPS raw data, modified them and export as txt file
 
