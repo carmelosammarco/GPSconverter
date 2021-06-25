@@ -7,15 +7,15 @@
 
 It Can be usefull when:
 
-- You need to visualise your GPS raw data, modified them and export as txt file
+- You want to visualise your GPS raw data, modified them and export as txt file
 
 - You want have a fast preview of your GPS data on a map
 
-- You need to convert output GPS data to other formats (for example you tack your outdoor activity and for futher processing/scopes you need to have a different file format)
+- You need to convert output GPS data to other formats (for example the tracks/waypoints of your outdoor activity) for futher processing/scopes you could have
 
-- You want to visualize your data using the native Google Earth engine extention (KML)
+- You want to visualize your data using the native Google Earth engine extention (KML/KMZ)
 
-- You want to generate an HTML file ready for be embedded in your website or published in a server... 
+- You want to generate an HTML file ready for be embedded in your website or published into a server 
 
 and many more.... 
 
@@ -35,7 +35,7 @@ GPSconverter
 
 - **Convert from gpx to CSV**
 
-- **Convert from gpx to KML**
+- **Convert from gpx to KML/KMZ**
 
 - **Convert from gpx to JSON**
 
@@ -50,7 +50,7 @@ GPSconverter
 
 ## Stand alone version:
 
-At the moment it is a working in progress. The aim is to be able to realise an executable to run without any python requirements/installation and natively for both Window and MacOS operative systems. However the Application icon is ready.. here below:
+At the moment it is a working in progress. The aim is to be able to realise an executable to run without any python requirements/installation and natively for both Window and MacOS operative systems. However, the Application icon is ready.. here below:
 
 ![Imgur](https://i.imgur.com/1zIm0KGs.png)
 
