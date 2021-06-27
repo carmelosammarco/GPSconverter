@@ -1,5 +1,7 @@
 # GPSconverter (Global-Positioning-System Converter)
 
+[![Build Status](https://travis-ci.com/carmelosammarco/GPSconverter.png)](https://travis-ci.com/carmelosammarco/GPSconverter)[![PyPi](https://img.shields.io/badge/PyPi-Project-yellow.svg)](https://pypi.org/project/GPSconverter/)
+
 ![Imgur](https://i.imgur.com/jbCBPkh.png)
 
 
@@ -19,6 +21,8 @@ It can be usefull when:
 
 and many more.... 
 
+**Inside the project folder (GPSconverter)/DATA you can find a "test_data" folder with inside a GPX file so to be able to use the application and verify that all work well.**
+
 ## Installation
 
 ```
@@ -30,6 +34,12 @@ Then just type on your terminal/command_propt the following:
 ```
 GPSconverter
 ```
+At this point a GUI interface will pop up and you are ready to go! 
+
+<p align="center">
+  <img width="" height="380" src="PIC/GUIs.png">
+</p>
+
 
 ## Conversions avaiable
 
@@ -46,6 +56,8 @@ GPSconverter
 - **Convert from gpx to GeoJSON(Points)**
 
 - **Convert from gpx to GeoJSON(Line)**
+
+I have still ideas and improvements that can be done ( it is an infinite process and it will never stop for me) but anyway it is a good base to start with... Feel free to "fork" and contribute!
 
 
 ## Stand alone version:
