@@ -43,19 +43,19 @@ At this point a GUI interface will pop up and you are ready to go!
 
 ## Conversions avaiable
 
-- **Convert from gpx to CSV**
+- **Convert from GPX to CSV**
 
-- **Convert from gpx to KML/KMZ**
+- **Convert from GPX to KML/KMZ**
 
-- **Convert from gpx to JSON**
+- **Convert from GPX to JSON**
 
-- **Convert from gpx to HTML**
+- **Convert from GPX to HTML**
 
-- **Convert from gpx to RASTER**
+- **Convert from GPX to RASTER**
 
-- **Convert from gpx to GeoJSON(Points)**
+- **Convert from GPX to GeoJSON(Points)**
 
-- **Convert from gpx to GeoJSON(Line)**
+- **Convert from GPX to GeoJSON(Line)**
 
 I have still ideas and improvements that can be done ( it is an infinite process and it will never stop for me) but anyway it is a good base to start with... Feel free to "fork" and contribute!
 
