@@ -23,10 +23,8 @@ import json
 import simplekml
 from tkmacosx import Button
 
-from shapely.geometry import Point, LineString, mapping
-from fiona import collection
-import shapefile
-import csv342 as csv
+import geopandas as gpd
+import fiona 
 
 def main(args=None):
 
@@ -99,22 +97,6 @@ def main(args=None):
             df.to_csv(fileout, index=False)
     
 
-    # def toshp_point():
-    #     toCSV()
-    #     filecsv = open(selfolder.Home_dir + "/Output.csv")
-    #     listed=[]
-    #     line = filecsv.readline()
-    #     for u in line.split(','):
-    #         listed.append(u)
-    #     schema = { 'geometry': 'Point' }
-    #     with collection(selfolder.Home_dir + "/Output.shp", "w", "ESRI Shapefile", schema) as output:
-    #         with open(selfolder.Home_dir + "/Output.csv", 'r') as f:
-    #             reader = csv.DictReader(f)
-    #             for row in reader:
-    #                 point = Point(float(row['Longitude']), float(row['Latitude']))
-    #                 output.write({
-    #                     'geometry': mapping(point)
-    #                 })
         
     def toJSON():
         GPSfile=selfile.input_file
@@ -195,6 +177,22 @@ def main(args=None):
         with open(selfolder.Home_dir + "/Track.geojson", 'w') as f:
             f.write(json.dumps(geojson, indent=4))
         os.remove(selfolder.Home_dir + "/Output.csv")
+
+    
+    def toshp_point():
+        toGEOJSONpoint()
+        infile = selfolder.Home_dir + "/Points.geojson"
+        gdf = gpd.read_file(infile)
+        gdf.to_file(selfolder.Home_dir + "/Points.shp")
+        os.remove(selfolder.Home_dir + "/Points.geojson")
+    
+
+    def toshp_line():
+        toGEOJASONtrack()
+        infile = selfolder.Home_dir + "/Track.geojson"
+        gdf = gpd.read_file(infile)
+        gdf.to_file(selfolder.Home_dir + "/Track.shp")
+        os.remove(selfolder.Home_dir + "/Track.geojson")
 
     
     def toKmz():
@@ -353,9 +351,15 @@ if __name__ == '__main__':
     ##
     btn = Button(window, text="TO GEOJSON (LINE)", bg="orange", command=toGEOJASONtrack) 
     btn.grid(column=0, row=17)
-
-    btn = Button(window, text=" TO FLASK PROJECT", bg="orange", command=publish_map)  
+    ##
+    btn = Button(window, text="TO SHAPE-FILE (POINTS)", bg="orange", command=toshp_point) 
     btn.grid(column=0, row=18)
+    ##
+    btn = Button(window, text="TO SHAPE-FILE (LINE)", bg="orange", command=toshp_line) 
+    btn.grid(column=0, row=19)
+    ##
+    btn = Button(window, text=" TO FLASK PROJECT", bg="orange", command=publish_map)  
+    btn.grid(column=0, row=20)
 
     #################################################################
 
