@@ -23,6 +23,11 @@ import json
 import simplekml
 from tkmacosx import Button
 
+from shapely.geometry import Point, LineString, mapping
+from fiona import collection
+import shapefile
+import csv342 as csv
+
 def main(args=None):
 
     
@@ -92,8 +97,24 @@ def main(args=None):
             combined = np.array(list(zip(lat,lon,ele,time)))
             df = pd.DataFrame(combined, columns = ['Latitude','Longitude','Elevation','Time'])
             df.to_csv(fileout, index=False)
+    
 
-
+    # def toshp_point():
+    #     toCSV()
+    #     filecsv = open(selfolder.Home_dir + "/Output.csv")
+    #     listed=[]
+    #     line = filecsv.readline()
+    #     for u in line.split(','):
+    #         listed.append(u)
+    #     schema = { 'geometry': 'Point' }
+    #     with collection(selfolder.Home_dir + "/Output.shp", "w", "ESRI Shapefile", schema) as output:
+    #         with open(selfolder.Home_dir + "/Output.csv", 'r') as f:
+    #             reader = csv.DictReader(f)
+    #             for row in reader:
+    #                 point = Point(float(row['Longitude']), float(row['Latitude']))
+    #                 output.write({
+    #                     'geometry': mapping(point)
+    #                 })
         
     def toJSON():
         GPSfile=selfile.input_file
