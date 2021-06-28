@@ -33,8 +33,10 @@ setup(name='GPSconverter',
         'simplekml >= 1.3.5',
         'tkmacosx >= 1.0.3',
         'html2image >= 1.1.3',
-        'fiona>=1.8.4',
-        'geopandas >= 0.9.0'
+        'fiona>= 1.8.4',
+        'geopandas >= 0.9.0',
+        'pyshp >= 2.1.3',
+        'matplotlib >= 3.4.2'
         
         
       ],

@@ -25,6 +25,13 @@ from tkmacosx import Button
 
 import geopandas as gpd
 import fiona 
+import shapefile
+
+# import array
+# import matplotlib.pyplot as plt
+# import cartopy                                  
+# import cartopy.crs as ccrs                      
+# import cartopy.io.img_tiles as cimgt
 
 def main(args=None):
 
@@ -257,9 +264,36 @@ def main(args=None):
         factor = 10 #increase contrast
         im_output = enhancer.enhance(factor)
         im_output.save(selfolder.Home_dir + "/MAP.png")
+        
+
+    # def tomap():
+    #     # Open and parse your GPX file.
+    #     trackFile = selfile.input_file
+    #     track = gpxpy.parse(open(trackFile))
+    #     # Make an iterator over the points in the GPS track.
+    #     trackPoints = track.walk()
+    #     # Make empty arrays to put the latitudes an longitudes in.
+    #     lats = array.array('f')
+    #     lons = array.array('f')
+    #     # Iterate over all points an populate the latitude and longitude arrays.
+    #     for p in trackPoints:
+    #         lats.append(float(p[0].latitude))
+    #         lons.append(float(p[0].longitude))
+    #     # Get the minimum and maximum latitudes and longitudes from the GPS track.
+    #     bounds = track.get_bounds()
+    #     request = cimgt.StamenTerrain()
+    #     fig = plt.figure(figsize=(10,10), dpi=300, tight_layout=True)
+    #     ax = plt.axes(projection=request.crs)
+    #     #ax = plt.axes(projection=ccrs.PlateCarree())
+    #     plt.title('MAP OVERVIEW')
+    #     zoom = 14
+    #     ax.add_image(request, zoom)
+    #     plt.plot(lons, lats, 'm-', transform=ccrs.PlateCarree(), linewidth=3)
+    #     plt.savefig(selfolder.Home_dir + "/MAP.png")
+
 
         
-    def preview():
+    def previewfrohtmlim():
         generate_html()
         htmltoim()
         imfix = PIL.Image.open(selfolder.Home_dir + "/MAP.png")
@@ -271,6 +305,22 @@ def main(args=None):
         img.image = render
         img.grid(column=0, row=0)
         os.remove(selfolder.Home_dir + "/index.html")
+
+
+
+    # def previewfrommap():
+    #     #generate_html()
+    #     #htmltoim()
+    #     tomap()
+    #     imfix = PIL.Image.open(selfolder.Home_dir + "/MAP.png")
+    #     #resize = imfix.resize((w, h), PIL.Image.LANCZOS)
+    #     resize = imfix.resize((int(imfix.size[0]/2),int(imfix.size[1]/2)), 0)
+    #     render = ImageTk.PhotoImage(resize)
+    #     windowpop = Toplevel(window)
+    #     img = Label(windowpop, image=render)
+    #     img.image = render
+    #     img.grid(column=0, row=0)
+        
     
 
     def publish_map():
@@ -325,7 +375,7 @@ if __name__ == '__main__':
     space = Label(window, text="")
     space.grid(column=0, row=8)
     ###
-    btn = Button(window, text="PREVIEW MAP", bg="deep sky blue", command=preview)  
+    btn = Button(window, text="PREVIEW MAP", bg="deep sky blue", command=previewfrohtmlim)  
     btn.grid(column=0, row=9)
     ###
     space = Label(window, text="")
