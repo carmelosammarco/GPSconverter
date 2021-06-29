@@ -29,6 +29,8 @@ import shapefile
 
 # import array
 # import matplotlib.pyplot as plt
+
+# conda install cartopy...
 # import cartopy                                  
 # import cartopy.crs as ccrs                      
 # import cartopy.io.img_tiles as cimgt
