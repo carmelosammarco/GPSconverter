@@ -245,7 +245,7 @@ def main(args=None):
             for segment in track.segments: 
                 for point in segment.points:
                     points.append(tuple([point.latitude, point.longitude]))   
-        mappa = folium.Map(location=[df.Latitude.mean(), df.Longitude.mean()], tiles=None, zoom_start=14, control_scale=True, control=True)
+        mappa = folium.Map(location=[df.Latitude.mean(), df.Longitude.mean()], tiles=None, zoom_start=10, control_scale=True, control=True)
         track = folium.PolyLine(points, color="blue", weight=5, popup="Track")
         track.add_to(mappa)
         folium.TileLayer('openstreetmap', name='OpenStreetMap').add_to(mappa)
@@ -258,6 +258,7 @@ def main(args=None):
 
 
     def htmltoim():
+        generate_html()
         hti = Html2Image()
         hti.output_path = selfolder.Home_dir 
         hti.screenshot(html_file= selfolder.Home_dir + "/index.html",save_as="MAP.png")

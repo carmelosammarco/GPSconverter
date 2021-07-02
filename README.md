@@ -11,9 +11,9 @@ It can be usefull when:
 
 - You want to visualise your GPS raw data, modified them and export as txt file
 
-- You want have a fast preview of your GPS data on a map
+- You want have a fast preview of your GPS data on a map which can be done with a render of the folium html page or using the powerfull generic mapping tool.
 
-- You need to convert output GPS data to other formats (for example the tracks/waypoints of your outdoor activity) for futher processing/scopes you could have
+- You need to convert GPS data to other formats (for example the tracks/waypoints of your outdoor activity) for futher processing/scopes you could have
 
 - You want to visualize your data using the native Google Earth engine extention (KML/KMZ)
 
@@ -25,15 +25,42 @@ and many more....
 
 ## Installation
 
+The best way is create an ad-hoc environment with the anaconda python distribution and more specifically throught the "yml" file using the following command:
+
+```
+conda env create -f name-environment.yml
+```
+
+You can download the "yml' file needed (in the above example as name-environment.yml) clicking the badge here below: 
+
+[![Anaconda-Server Badge](https://anaconda.org/csammarco/gpsx/badges/installer/env.svg)](https://anaconda.org/CSammarco/gpsx)
+
+The command to run the process in your machine is:
+
+```
+conda env create -f GPSX.yml
+```
+
+then to activate the environmet:
+
+```
+conda activate GPSX
+```
+
+One you installed the anaconda environment you should be able to have all the packages needed instaled (The GPSconverter Application too!). 
+
+If for some reason you want to install it using just pypi repository (be aware that in this case you need to install GMT manually, you can find more info [here](https://github.com/GenericMappingTools/gmt/blob/master/INSTALL.md#cross-platform-install-instructions)) then the command is the following:
+
 ```
 pip install GPSconverter
 ```
 
-Then just type on your terminal/command_propt the following:
+Anyway, once you decice how to proceed (by conda environment or pypi repository) to run the application just type on your terminal/command_propt the following:
 
 ```
 GPSconverter
 ```
+
 At this point a GUI interface will pop up and you are ready to go! 
 
 <p align="center">
