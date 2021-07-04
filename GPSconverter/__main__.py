@@ -1,3 +1,4 @@
+from tkinter.constants import TRUE
 import pkg_resources
 import gpxpy
 import pandas as pd
@@ -8,7 +9,7 @@ import shutil
 import folium
 import PIL.Image
 from PIL import ImageTk, ImageEnhance
-from tkinter import PhotoImage, Toplevel
+from tkinter import Grid, PhotoImage, Toplevel
 from tkinter import Canvas
 from tkinter import Tk
 from tkinter import END
@@ -26,18 +27,10 @@ from tkmacosx import Button
 import geopandas as gpd
 import fiona 
 import shapefile
-
-# import array
-# import matplotlib.pyplot as plt
-
-# conda install cartopy...
-# import cartopy                                  
-# import cartopy.crs as ccrs                      
-# import cartopy.io.img_tiles as cimgt
+import pygmt
 
 def main(args=None):
 
-    
     window = Tk()
 
     image = pkg_resources.resource_filename('GPSconverter', 'DATA/LOGO.gif')
@@ -245,7 +238,7 @@ def main(args=None):
             for segment in track.segments: 
                 for point in segment.points:
                     points.append(tuple([point.latitude, point.longitude]))   
-        mappa = folium.Map(location=[df.Latitude.mean(), df.Longitude.mean()], tiles=None, zoom_start=10, control_scale=True, control=True)
+        mappa = folium.Map(location=[df.Latitude.mean(), df.Longitude.mean()], tiles=None, zoom_start=12, control_scale=True, control=True)
         track = folium.PolyLine(points, color="blue", weight=5, popup="Track")
         track.add_to(mappa)
         folium.TileLayer('openstreetmap', name='OpenStreetMap').add_to(mappa)
@@ -257,7 +250,7 @@ def main(args=None):
     
 
 
-    def htmltoim():
+    def htmlrender():
         generate_html()
         hti = Html2Image()
         hti.output_path = selfolder.Home_dir 
@@ -267,38 +260,11 @@ def main(args=None):
         factor = 10 #increase contrast
         im_output = enhancer.enhance(factor)
         im_output.save(selfolder.Home_dir + "/MAP.png")
-        
 
-    # def tomap():
-    #     # Open and parse your GPX file.
-    #     trackFile = selfile.input_file
-    #     track = gpxpy.parse(open(trackFile))
-    #     # Make an iterator over the points in the GPS track.
-    #     trackPoints = track.walk()
-    #     # Make empty arrays to put the latitudes an longitudes in.
-    #     lats = array.array('f')
-    #     lons = array.array('f')
-    #     # Iterate over all points an populate the latitude and longitude arrays.
-    #     for p in trackPoints:
-    #         lats.append(float(p[0].latitude))
-    #         lons.append(float(p[0].longitude))
-    #     # Get the minimum and maximum latitudes and longitudes from the GPS track.
-    #     bounds = track.get_bounds()
-    #     request = cimgt.StamenTerrain()
-    #     fig = plt.figure(figsize=(10,10), dpi=300, tight_layout=True)
-    #     ax = plt.axes(projection=request.crs)
-    #     #ax = plt.axes(projection=ccrs.PlateCarree())
-    #     plt.title('MAP OVERVIEW')
-    #     zoom = 14
-    #     ax.add_image(request, zoom)
-    #     plt.plot(lons, lats, 'm-', transform=ccrs.PlateCarree(), linewidth=3)
-    #     plt.savefig(selfolder.Home_dir + "/MAP.png")
-
-
-        
-    def previewfrohtmlim():
+    
+    def previewfromhtml():
         generate_html()
-        htmltoim()
+        htmlrender()
         imfix = PIL.Image.open(selfolder.Home_dir + "/MAP.png")
         #resize = imfix.resize((w, h), PIL.Image.LANCZOS)
         resize = imfix.resize((int(imfix.size[0]/2),int(imfix.size[1]/2)), 0)
@@ -308,21 +274,208 @@ def main(args=None):
         img.image = render
         img.grid(column=0, row=0)
         os.remove(selfolder.Home_dir + "/index.html")
+        
+
+    def CSVtoGMTmap():
+        CSVfile = selfile.input_file
+        lats = []
+        lons = []
+        df = pd.read_csv(CSVfile, infer_datetime_format=True, na_values=['']) 
+        for index, row in df.iterrows():
+             lats.append(row[0])
+             lons.append(row[1])
+        zoommapregion_scale = 2
+        zoominsregion_scale = 20
+        region =[ 
+            df.Longitude.min() -zoommapregion_scale,
+            df.Longitude.max() +zoommapregion_scale,
+            df.Latitude.min() -(zoommapregion_scale/2),
+            df.Latitude.max() +(zoommapregion_scale/2), ]
+        regionins=[
+            df.Longitude.min() -zoominsregion_scale,
+            df.Longitude.max() +zoominsregion_scale, 
+            df.Latitude.min()  -(zoominsregion_scale/2),
+            df.Latitude.max()  +(zoominsregion_scale/2), ]
+        #pointxmean = df.Longitude.mean()
+        #pointymean = df.Latitude.mean() 
+        rectangle = [[region[0], region[2], region[1], region[3]]]
+        #pygmt.config(MAP_FRAME_TYPE="plain")
+        pygmt.config(FORMAT_GEO_MAP="ddd.xx")
+        #define topo data file and CPTs
+        topo_data = '@earth_relief_30s' 
+        #topo_data = 'add a local one in app... ??'
+        #CPTtopo = ' add a local one in app... ??'
+        CPTtopo = 'dem1'   
+        proj = "M20c"
+        fig = pygmt.Figure()
+        pygmt.grdcut(grid=topo_data, outgrid=selfolder.Home_dir  + '/topo.grd', region=region)
+        pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo,continuous=True) 
+        fig.basemap(region=region, projection=proj, frame=[ "a", "+tGPX-MAP"])
+        fig.grdimage( 
+            grid=topo_data, 
+            region=region,
+            projection=proj,
+            shading=True,
+            frame='a'
+            )
+        fig.coast(
+            region=region,
+            projection=proj,
+            #water='skyblue',
+            resolution='f',
+            shorelines=True,
+            lakes=True,
+            rivers='a',
+            frame='a'
+        )
+        fig.grdcontour(
+            #annotation=500,
+            interval=200,
+            grid=topo_data,
+            limit=[0, 5000],
+            projection=proj,
+            frame='a'
+        )
+        fig.plot(
+            x=lons,
+            y=lats,
+            pen="1p,red",
+        ) 
+        #fig.plot(x=pointx, y=pointy, style="c1c", color="red", pen="black", frame='a')
+        fig.colorbar(
+            frame=['a', "x+lElevation"]
+        )
+        ################################################
+        with fig.inset(position="jBL+w4.6c/3c+o0.2c/0.2c", box="+gwhite+p2p"):
+            #pygmt.config(MAP_FRAME_TYPE="plain")
+            # Use a plotting function to create a figure inside the inset
+            rectangle = [[region[0], region[2], region[1], region[3]]]
+            fig.coast(
+                region=regionins,
+                projection="M?",
+                land="grey",
+                borders=[1, 2],
+                shorelines="1/thin",
+                water="blue",   
+            )
+            fig.plot(data=rectangle, style="r+s", pen="0.4p,red")
+        ###############################################
+        fig.savefig(selfolder.Home_dir + "/MAPgmtfromCSV.png",  transparent=False, crop=True, anti_alias=True, dpi=300)
+
+    def viewGMTcsv():
+        CSVtoGMTmap()
+        imfix = PIL.Image.open(selfolder.Home_dir + "/MAPgmtfromCSV.png")
+        #resize = imfix.resize((w, h), PIL.Image.LANCZOS)
+        resize = imfix.resize((int(imfix.size[0]/2),int(imfix.size[1]/2)), 0)
+        render = ImageTk.PhotoImage(resize)
+        windowpop = Toplevel(window)
+        img = Label(windowpop, image=render)
+        img.image = render
+        img.grid(column=0, row=0)
+
+    def GPXtoGMTmap():
+        GPSfile= selfile.input_file
+        gpx = gpxpy.parse(open(GPSfile)) 
+        track = gpx.tracks[0]
+        segment = track.segments[0]
+        data = []
+        lats = []
+        lons = []
+        for point_idx, point in enumerate(segment.points):
+            data.append([point.longitude, point.latitude, point.elevation, point.time, segment.get_speed(point_idx)])
+            lats.append(point.latitude)
+            lons.append(point.longitude)
+            columns = ['Longitude', 'Latitude', 'Altitude', 'Time', 'Speed']
+            df = pd.DataFrame(data, columns=columns)
+        zoommapregion_scale = 2
+        zoominsregion_scale = 20
+        region =[ 
+            df.Longitude.min() -zoommapregion_scale,
+            df.Longitude.max() +zoommapregion_scale,
+            df.Latitude.min() -(zoommapregion_scale/2),
+            df.Latitude.max() +(zoommapregion_scale/2), ]
+        regionins=[
+            df.Longitude.min() -zoominsregion_scale,
+            df.Longitude.max() +zoominsregion_scale, 
+            df.Latitude.min()  -(zoominsregion_scale/2),
+            df.Latitude.max()  +(zoominsregion_scale/2), ]
+        #pointxmean = df.Longitude.mean()
+        #pointymean = df.Latitude.mean() 
+        rectangle = [[region[0], region[2], region[1], region[3]]]
+        #pygmt.config(MAP_FRAME_TYPE="plain")
+        pygmt.config(FORMAT_GEO_MAP="ddd.xx")
+        #define topo data file and CPTs
+        topo_data = '@earth_relief_30s' 
+        #topo_data = 'add a local one in app... ??'
+        #CPTtopo = ' add a local one in app... ??'
+        CPTtopo = 'dem1'   
+        proj = "M20c"
+        fig = pygmt.Figure()
+        pygmt.grdcut(grid=topo_data, outgrid=selfolder.Home_dir  + '/topo.grd', region=region)
+        pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo,continuous=True) 
+        fig.basemap(region=region, projection=proj, frame=[ "a", "+tGPX-MAP"])
+        fig.grdimage( 
+            grid=topo_data, 
+            region=region,
+            projection=proj,
+            shading=True,
+            frame='a'
+            )
+        fig.coast(
+            region=region,
+            projection=proj,
+            #water='skyblue',
+            resolution='f',
+            shorelines=True,
+            lakes=True,
+            rivers='a',
+            frame='a'
+        )
+        fig.grdcontour(
+            #annotation=500,
+            interval=200,
+            grid=topo_data,
+            limit=[0, 5000],
+            projection=proj,
+            frame='a'
+        )
+        fig.plot(
+            x=lons,
+            y=lats,
+            pen="1p,red",
+        ) 
+        #fig.plot(x=pointx, y=pointy, style="c1c", color="red", pen="black", frame='a')
+        fig.colorbar(
+            frame=['a', "x+lElevation"]
+        )
+        ################################################
+        with fig.inset(position="jBL+w4.6c/3c+o0.2c/0.2c", box="+gwhite+p2p"):
+            #pygmt.config(MAP_FRAME_TYPE="plain")
+            # Use a plotting function to create a figure inside the inset
+            rectangle = [[region[0], region[2], region[1], region[3]]]
+            fig.coast(
+                region=regionins,
+                projection="M?",
+                land="grey",
+                borders=[1, 2],
+                shorelines="1/thin",
+                water="blue",   
+            )
+            fig.plot(data=rectangle, style="r+s", pen="0.4p,red")
+        ###############################################
+        fig.savefig(selfolder.Home_dir + "/MAPgmtfromGPX.png",  transparent=False, crop=True, anti_alias=True, dpi=300)
 
 
-
-    # def previewfrommap():
-    #     #generate_html()
-    #     #htmltoim()
-    #     tomap()
-    #     imfix = PIL.Image.open(selfolder.Home_dir + "/MAP.png")
-    #     #resize = imfix.resize((w, h), PIL.Image.LANCZOS)
-    #     resize = imfix.resize((int(imfix.size[0]/2),int(imfix.size[1]/2)), 0)
-    #     render = ImageTk.PhotoImage(resize)
-    #     windowpop = Toplevel(window)
-    #     img = Label(windowpop, image=render)
-    #     img.image = render
-    #     img.grid(column=0, row=0)
+    def viewGMTgpx():
+        GPXtoGMTmap()
+        imfix = PIL.Image.open(selfolder.Home_dir + "/MAPgmtfromGPX.png")
+        #resize = imfix.resize((w, h), PIL.Image.LANCZOS)
+        resize = imfix.resize((int(imfix.size[0]/2),int(imfix.size[1]/2)), 0)
+        render = ImageTk.PhotoImage(resize)
+        windowpop = Toplevel(window)
+        img = Label(windowpop, image=render)
+        img.image = render
+        img.grid(column=0, row=0)
         
     
 
@@ -353,7 +506,7 @@ if __name__ == '__main__':
     #GUI interface 
     #######################
 
-    btn = Button(window, text="SELECT DATA", bg="green2", command=selfile)
+    btn = Button(window, text="SELECT FILE", bg="green2", command=selfile)
     btn.grid(column=0, row=1)
     ###
     ###
@@ -378,42 +531,45 @@ if __name__ == '__main__':
     space = Label(window, text="")
     space.grid(column=0, row=8)
     ###
-    btn = Button(window, text="PREVIEW MAP", bg="deep sky blue", command=previewfrohtmlim)  
+    btn = Button(window, text="HTML-RENDER", bg="deep sky blue", command=previewfromhtml)  
     btn.grid(column=0, row=9)
     ###
-    space = Label(window, text="")
-    space.grid(column=0, row=10)
-    ####
-    btn = Button(window, text="TO CSV", bg="orange", command=toCSV) 
+    btn = Button(window, text="GPX TO MAP", bg="deep sky blue", command=viewGMTgpx)  
+    btn.grid(column=0, row=10)
+    ###
+    btn = Button(window, text="CSV TO MAP", bg="deep sky blue", command=viewGMTcsv)  
     btn.grid(column=0, row=11)
     ###
-    btn = Button(window, text="TO KML/KMZ", bg="orange", command=toKmz) 
+    btn = Button(window, text="FLASK PROJECT", bg="deep sky blue", command=publish_map)  
     btn.grid(column=0, row=12)
     ###
-    btn = Button(window, text="TO JSON", bg="orange", command=toJSON) 
-    btn.grid(column=0, row=13)
-    ##
-    btn = Button(window, text="TO HTML", bg="orange", command=generate_html) 
+    space = Label(window, text="")
+    space.grid(column=0, row=13)
+    ####
+    btn = Button(window, text="GPX TO CSV", bg="orange", command=toCSV) 
     btn.grid(column=0, row=14)
-    ##
-    btn = Button(window, text="TO RASTER", bg="orange", command=htmltoim)  
+    ###
+    btn = Button(window, text="GPX TO KML/KMZ", bg="orange", command=toKmz) 
     btn.grid(column=0, row=15)
-    ##
-    btn = Button(window, text="TO GEOJSON (POINTS)", bg="orange", command=toGEOJSONpoint) 
+    ###
+    btn = Button(window, text="GPX TO JSON", bg="orange", command=toJSON) 
     btn.grid(column=0, row=16)
     ##
-    btn = Button(window, text="TO GEOJSON (LINE)", bg="orange", command=toGEOJASONtrack) 
+    btn = Button(window, text="GPX TO HTML", bg="orange", command=generate_html) 
     btn.grid(column=0, row=17)
     ##
-    btn = Button(window, text="TO SHAPE-FILE (POINTS)", bg="orange", command=toshp_point) 
+    btn = Button(window, text="GPX TO GEOJSON (POINTS)", bg="orange", command=toGEOJSONpoint) 
     btn.grid(column=0, row=18)
     ##
-    btn = Button(window, text="TO SHAPE-FILE (LINE)", bg="orange", command=toshp_line) 
+    btn = Button(window, text="GPX TO GEOJSON (LINE)", bg="orange", command=toGEOJASONtrack) 
     btn.grid(column=0, row=19)
     ##
-    btn = Button(window, text=" TO FLASK PROJECT", bg="orange", command=publish_map)  
+    btn = Button(window, text="GPX TO SHAPE-FILE (POINTS)", bg="orange", command=toshp_point) 
     btn.grid(column=0, row=20)
-
+    ##
+    btn = Button(window, text="GPX TO SHAPE-FILE (LINE)", bg="orange", command=toshp_line) 
+    btn.grid(column=0, row=21)
+    ##
     #################################################################
 
     window.mainloop()
