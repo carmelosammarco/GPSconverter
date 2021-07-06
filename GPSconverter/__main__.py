@@ -9,9 +9,10 @@ import shutil
 import folium
 import PIL.Image
 from PIL import ImageTk, ImageEnhance
-from tkinter import Grid, PhotoImage, Toplevel
+from tkinter import PhotoImage, Toplevel
 from tkinter import Canvas
 from tkinter import Tk
+from tkinter import ttk
 from tkinter import END
 from tkinter import INSERT
 from tkinter import Label
@@ -21,13 +22,13 @@ from tkinter import messagebox
 from tkinter import scrolledtext
 from html2image import Html2Image 
 import json
+import csv
 import simplekml
 from tkmacosx import Button
-
 import geopandas as gpd
-import fiona 
-import shapefile
 import pygmt
+
+
 
 def main(args=None):
 
@@ -39,9 +40,21 @@ def main(args=None):
     h = photo.height()
     cv = Canvas(window, width=w, height=h)
     cv.create_image(0,0, image=photo, anchor='nw')
-    cv.grid(column=0, row=0) 
+    #cv.grid(column=0, row=0) 
+    cv.pack(side='top')
+
+    tab_control = ttk.Notebook(window)
+    tab1 = ttk.Frame(tab_control)
+    tab2 = ttk.Frame(tab_control)
+    tab3 = ttk.Frame(tab_control)
+    tab4 = ttk.Frame(tab_control)
+    tab_control.add(tab1, text='INPUT')
+    tab_control.add(tab2, text='CSV-CONVERTER')
+    tab_control.add(tab3, text='GPX-CONVERTER')
+    tab_control.add(tab4, text='MAPS')
 
     window.title("GPSconverer BY CARMELO SAMMARCO")
+
 
     #########################
     #Functions 
@@ -50,18 +63,20 @@ def main(args=None):
     def selfile():
         selfile.input_file = filedialog.askopenfilename()
 
-
     def selfolder():
         selfolder.Home_dir = filedialog.askdirectory()
 
-    def getData():
+    def viewinput():
+        global txt
+        windowpop = Toplevel(tab1)
+        txt = scrolledtext.ScrolledText(windowpop,width=100,height=50)
+        txt.pack()
         GPSfile=selfile.input_file
         data = open(GPSfile).read()
         text = str(data)
         txt.insert(INSERT,text)
-
-    def cleanData():
-        txt.delete(1.0,END)
+        btn = Button(windowpop, text="EXPORT AS .TXT FILE", bg="yellow", command=exportdata)
+        btn.pack()
     
     def exportdata():
         file = selfolder.Home_dir + "/Export.txt"
@@ -70,7 +85,66 @@ def main(args=None):
         f.close()
         messagebox.showinfo('FYI', 'File Saved.')
     
-    def toCSV():
+    def CSVtoGPX():
+        CSV = selfile.input_file
+        df = pd.read_csv(CSV) 
+        Latitude = [] #0
+        Longitude = [] #1
+        Elevation = [] #2
+        Time = [] #3	
+        for n in range(0,len(CSV)):
+            with open(CSV,encoding='utf-8',mode='r') as csvfile: #closes file automatically with completion of block
+                csvdata = csv.reader(csvfile, delimiter=',')		        
+        for index, row in df.iterrows():
+            Latitude.append(row[0])
+            Longitude.append(row[1])
+            Elevation.append(row[2])
+            Time.append(row[3])
+        with open(selfolder.Home_dir + "/Output.gpx", encoding='utf-8', mode='w') as of:	
+            #header
+            of.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
+            of.write("\n")
+            of.write('<gpx version="1.1" creator="GPSconverter https://github.com/carmelosammarco/GPSconverter">') 
+            of.write("\n")
+            of.write("<trk>")
+            of.write("\n")
+            of.write("  <name>Output</name>")
+            of.write("\n")
+            of.write("  <trkseg>")
+            of.write("\n")
+            #write trackpoints here
+            for i in range(0, len(Latitude)):
+                # #lat,lon
+                of.write("    <trkpt lat=\"")
+                of.write('%.15f' % Latitude[i])
+                of.write("\" lon=\"")
+                of.write('%.15f' % Longitude[i])
+                of.write("\">\n")
+                #Elevation
+                if(Elevation[i]):
+                    of.write("      <ele>")
+                    of.write(str(Elevation[i]))
+                    of.write("</ele>\n")
+                else:
+                    of.write("      <ele>")
+                    of.write(str(0))
+                    of.write("</ele>\n")
+                #time
+                if(len(Time[i])>0):
+                    of.write("      <time>")
+                    of.write(Time[i])
+                    of.write("</time>\n")
+                    #of.write("\n")
+                    of.write("    </trkpt>")
+                    of.write("\n")    
+            #end of file
+            of.write("  </trkseg>")
+            of.write("\n")
+            of.write("</trk>")
+            of.write("\n")
+            of.write("</gpx>")
+
+    def GPXtoCSV():
         GPSfile=selfile.input_file
         data = open(GPSfile).read()
         fileout = selfolder.Home_dir + "/Output.csv"
@@ -97,10 +171,8 @@ def main(args=None):
             combined = np.array(list(zip(lat,lon,ele,time)))
             df = pd.DataFrame(combined, columns = ['Latitude','Longitude','Elevation','Time'])
             df.to_csv(fileout, index=False)
-    
 
-        
-    def toJSON():
+    def GPXtoJSON():
         GPSfile=selfile.input_file
         data = open(GPSfile).read()
         fileout = selfolder.Home_dir + "/Output.json"
@@ -130,9 +202,8 @@ def main(args=None):
             df = pd.DataFrame(combined, columns = ['Latitude','Longitude','Elevation','Time'])
             df.to_json(fileout)
 
-
-    def toGEOJSONpoint():
-        toCSV()
+    def GPXtoGEOJSONpoint():
+        GPXtoCSV()
         filein = selfolder.Home_dir + "/Output.csv"
         data_frame = pd.read_csv(filein,infer_datetime_format=True,na_values=[''])
         json_result_string = data_frame.to_json(orient='records', double_precision=12,date_format='iso')
@@ -154,9 +225,8 @@ def main(args=None):
             f.write(json.dumps(geojson, indent=2))
         os.remove(selfolder.Home_dir + "/Output.csv")
     
-
-    def toGEOJASONtrack():
-        toCSV()
+    def GPXtoGEOJASONtrack():
+        GPXtoCSV()
         filein = selfolder.Home_dir + "/Output.csv"
         data_frame = pd.read_csv(filein,infer_datetime_format=True,na_values=[''])
         json_result_string = data_frame.to_json(orient='records', double_precision=12,date_format='iso')
@@ -179,26 +249,23 @@ def main(args=None):
         with open(selfolder.Home_dir + "/Track.geojson", 'w') as f:
             f.write(json.dumps(geojson, indent=4))
         os.remove(selfolder.Home_dir + "/Output.csv")
-
-    
-    def toshp_point():
-        toGEOJSONpoint()
+  
+    def GPXtoshp_point():
+        GPXtoGEOJSONpoint()
         infile = selfolder.Home_dir + "/Points.geojson"
         gdf = gpd.read_file(infile)
         gdf.to_file(selfolder.Home_dir + "/Points.shp")
         os.remove(selfolder.Home_dir + "/Points.geojson")
     
-
-    def toshp_line():
-        toGEOJASONtrack()
+    def GPXtoshp_line():
+        GPXtoGEOJASONtrack()
         infile = selfolder.Home_dir + "/Track.geojson"
         gdf = gpd.read_file(infile)
         gdf.to_file(selfolder.Home_dir + "/Track.shp")
         os.remove(selfolder.Home_dir + "/Track.geojson")
-
-    
-    def toKmz():
-        toCSV()
+   
+    def GPXtoKmz():
+        GPXtoCSV()
         filein = selfolder.Home_dir + "/Output.csv"
         data_frame = pd.read_csv(filein,infer_datetime_format=True,na_values=[''])
         json_result_string = data_frame.to_json(orient='records', double_precision=12,date_format='iso')
@@ -216,8 +283,6 @@ def main(args=None):
         kml.save(selfolder.Home_dir +'/Output.kml')
         kml.save(selfolder.Home_dir +'/Output.kmz')
         os.remove(selfolder.Home_dir + "/Output.csv")
-
-    
 
     def generate_html():
         GPSfile=selfile.input_file
@@ -248,8 +313,6 @@ def main(args=None):
         mappa.add_child(folium.LatLngPopup())
         mappa.save(selfolder.Home_dir + "/index.html", 'w')
     
-
-
     def htmlrender():
         generate_html()
         hti = Html2Image()
@@ -260,8 +323,7 @@ def main(args=None):
         factor = 10 #increase contrast
         im_output = enhancer.enhance(factor)
         im_output.save(selfolder.Home_dir + "/MAP.png")
-
-    
+   
     def previewfromhtml():
         generate_html()
         htmlrender()
@@ -275,7 +337,6 @@ def main(args=None):
         img.grid(column=0, row=0)
         os.remove(selfolder.Home_dir + "/index.html")
         
-
     def CSVtoGMTmap():
         CSVfile = selfile.input_file
         lats = []
@@ -305,14 +366,15 @@ def main(args=None):
         topo_data = '@earth_relief_30s' 
         #topo_data = 'add a local one in app... ??'
         #CPTtopo = ' add a local one in app... ??'
-        CPTtopo = 'dem1'   
+        CPTtopo = 'dem4'   
         proj = "M20c"
         fig = pygmt.Figure()
         pygmt.grdcut(grid=topo_data, outgrid=selfolder.Home_dir  + '/topo.grd', region=region)
-        pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo,continuous=True) 
+        pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo, continuous=True) 
         fig.basemap(region=region, projection=proj, frame=[ "a", "+tGPX-MAP"])
         fig.grdimage( 
-            grid=topo_data, 
+            grid=selfolder.Home_dir  + '/topo.grd', 
+            cmap=CPTtopo,
             region=region,
             projection=proj,
             shading=True,
@@ -321,7 +383,7 @@ def main(args=None):
         fig.coast(
             region=region,
             projection=proj,
-            #water='skyblue',
+            water='skyblue',
             resolution='f',
             shorelines=True,
             lakes=True,
@@ -408,14 +470,15 @@ def main(args=None):
         topo_data = '@earth_relief_30s' 
         #topo_data = 'add a local one in app... ??'
         #CPTtopo = ' add a local one in app... ??'
-        CPTtopo = 'dem1'   
+        CPTtopo = 'dem4'   
         proj = "M20c"
         fig = pygmt.Figure()
         pygmt.grdcut(grid=topo_data, outgrid=selfolder.Home_dir  + '/topo.grd', region=region)
-        pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo,continuous=True) 
+        pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo, continuous=True) 
         fig.basemap(region=region, projection=proj, frame=[ "a", "+tGPX-MAP"])
         fig.grdimage( 
-            grid=topo_data, 
+            grid=selfolder.Home_dir  + '/topo.grd', 
+            cmap=CPTtopo,
             region=region,
             projection=proj,
             shading=True,
@@ -424,7 +487,7 @@ def main(args=None):
         fig.coast(
             region=region,
             projection=proj,
-            #water='skyblue',
+            water='skyblue',
             resolution='f',
             shorelines=True,
             lakes=True,
@@ -465,7 +528,6 @@ def main(args=None):
         ###############################################
         fig.savefig(selfolder.Home_dir + "/MAPgmtfromGPX.png",  transparent=False, crop=True, anti_alias=True, dpi=300)
 
-
     def viewGMTgpx():
         GPXtoGMTmap()
         imfix = PIL.Image.open(selfolder.Home_dir + "/MAPgmtfromGPX.png")
@@ -477,8 +539,6 @@ def main(args=None):
         img.image = render
         img.grid(column=0, row=0)
         
-    
-
     def publish_map():
         source = selfolder.Home_dir + "/index.html"
         target = selfolder.Home_dir + "/WebAPP/templates/"
@@ -501,75 +561,88 @@ if __name__ == '__main__':
         os.chdir(selfolder.Home_dir + "/WebAPP/")
         os.system("python FlaskApp.py")
 
-
+    
     #######################
     #GUI interface 
     #######################
 
-    btn = Button(window, text="SELECT FILE", bg="green2", command=selfile)
-    btn.grid(column=0, row=1)
+    ###TAB 1
+    space = Label(tab1, text="")
+    space.pack()
+    ###TAB 1
+    btn = Button(tab1, text="SELECT FILE", bg="red", command=selfile)
+    btn.pack()
     ###
+    btn = Button(tab1, text="OUTPUT FOLDER", bg="red", command=selfolder)
+    btn.pack()
     ###
-    btn = Button(window, text="OUTPUT FOLDER", bg="green2", command=selfolder)
-    btn.grid(column=0, row=2)
+    space = Label(tab1, text="")
+    space.pack()
     ###
-    space = Label(window, text="")
-    space.grid(column=0, row=3)
+    btn = Button(tab1, text="VIEW DATA", bg="yellow", command=viewinput)
+    btn.pack()
     ###
-    btn = Button(window, text="VIEW DATA", bg="yellow", command=getData)
-    btn.grid(column=0, row=4)
+
+    ### TAB 2
+    space = Label(tab2, text="")
+    space.pack()
     ###
-    txt = scrolledtext.ScrolledText(window,width=68,height=20)
-    txt.grid(column=0,row=5)
-    ###
-    btn = Button(window, text="EXPORT DATA", bg="yellow", command=exportdata)
-    btn.grid(column=0, row=6)
-    ###
-    btn = Button(window, text="CLEAR DATA VIEW", bg="yellow", command=cleanData)
-    btn.grid(column=0, row=7)
-    ###
-    space = Label(window, text="")
-    space.grid(column=0, row=8)
-    ###
-    btn = Button(window, text="HTML-RENDER", bg="deep sky blue", command=previewfromhtml)  
-    btn.grid(column=0, row=9)
-    ###
-    btn = Button(window, text="GPX TO MAP", bg="deep sky blue", command=viewGMTgpx)  
-    btn.grid(column=0, row=10)
-    ###
-    btn = Button(window, text="CSV TO MAP", bg="deep sky blue", command=viewGMTcsv)  
-    btn.grid(column=0, row=11)
-    ###
-    btn = Button(window, text="FLASK PROJECT", bg="deep sky blue", command=publish_map)  
-    btn.grid(column=0, row=12)
-    ###
-    space = Label(window, text="")
-    space.grid(column=0, row=13)
+    btn = Button(tab2, text="CSV TO GPX", bg="green2", command=CSVtoGPX) 
+    btn.pack()
+
+
+    ###TAB 3
+    space = Label(tab3, text="")
+    space.pack()
     ####
-    btn = Button(window, text="GPX TO CSV", bg="orange", command=toCSV) 
-    btn.grid(column=0, row=14)
+    btn = Button(tab3, text="GPX TO CSV", bg="orange", command=GPXtoCSV) 
+    btn.pack()
     ###
-    btn = Button(window, text="GPX TO KML/KMZ", bg="orange", command=toKmz) 
-    btn.grid(column=0, row=15)
+    btn = Button(tab3, text="GPX TO JSON", bg="orange", command=GPXtoJSON) 
+    btn.pack()
+    ##
+    btn = Button(tab3, text="GPX TO HTML", bg="orange", command=generate_html) 
+    btn.pack()
+    ##
+    btn = Button(tab3, text="GPX TO KML/KMZ", bg="orange", command=GPXtoKmz) 
+    btn.pack()
+    ##
+    btn = Button(tab3, text="GPX TO GEOJSON (LINE)", bg="orange", command=GPXtoGEOJASONtrack) 
+    btn.pack()
+    ##
+    btn = Button(tab3, text="GPX TO SHAPE-FILE (LINE)", bg="orange", command=GPXtoshp_line) 
+    btn.pack()
+    ##
+    btn = Button(tab3, text="GPX TO GEOJSON (POINTS)", bg="orange", command=GPXtoGEOJSONpoint) 
+    btn.pack()
+    ##
+    btn = Button(tab3, text="GPX TO SHAPE-FILE (POINTS)", bg="orange", command=GPXtoshp_point) 
+    btn.pack()
+    ##
+
+
+
+
+
+    ###TAB 4
+    space = Label(tab4, text="")
+    space.pack()
     ###
-    btn = Button(window, text="GPX TO JSON", bg="orange", command=toJSON) 
-    btn.grid(column=0, row=16)
-    ##
-    btn = Button(window, text="GPX TO HTML", bg="orange", command=generate_html) 
-    btn.grid(column=0, row=17)
-    ##
-    btn = Button(window, text="GPX TO GEOJSON (POINTS)", bg="orange", command=toGEOJSONpoint) 
-    btn.grid(column=0, row=18)
-    ##
-    btn = Button(window, text="GPX TO GEOJSON (LINE)", bg="orange", command=toGEOJASONtrack) 
-    btn.grid(column=0, row=19)
-    ##
-    btn = Button(window, text="GPX TO SHAPE-FILE (POINTS)", bg="orange", command=toshp_point) 
-    btn.grid(column=0, row=20)
-    ##
-    btn = Button(window, text="GPX TO SHAPE-FILE (LINE)", bg="orange", command=toshp_line) 
-    btn.grid(column=0, row=21)
-    ##
+    btn = Button(tab4, text="GPX TO MAP", bg="deep sky blue", command=viewGMTgpx)  
+    btn.pack()
+    ###
+    btn = Button(tab4, text="CSV TO MAP", bg="deep sky blue", command=viewGMTcsv)  
+    btn.pack()
+    ###
+    btn = Button(tab4, text="HTML-RENDER", bg="deep sky blue", command=previewfromhtml)  
+    btn.pack()
+    ###
+    btn = Button(tab4, text="FLASK PROJECT", bg="deep sky blue", command=publish_map)  
+    btn.pack()
+    ###
+
     #################################################################
+
+    tab_control.pack(expand=1, fill='both')
 
     window.mainloop()
