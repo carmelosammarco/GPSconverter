@@ -4,7 +4,7 @@
 
 ![Imgur](https://i.imgur.com/jbCBPkh.png)
 
- The idea to developed this **Python based application for manipulating/view GPS data** borned while I was doing some trekking because I wanted a fast way to convert all the file saved and plot them automatically. As many development and during the process I added many other features :) Hope you like it! 
+Python application to manipulate & view GPS data. The tool born while I was doing some trekking because I wanted a fast way to convert and plot all the GPS file saved automatically and with the minimal effort. :) Hope you like it! 
 
 It can be usefull when:
 
