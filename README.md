@@ -4,22 +4,23 @@
 
 ![Imgur](https://i.imgur.com/jbCBPkh.png)
 
-
  The idea to developed this **Python based application for manipulating/view GPS data** borned while I was doing some trekking because I wanted a fast way to convert all the file saved and plot them automatically. As many development and during the process I added many other features :) Hope you like it! 
 
 It can be usefull when:
 
-- You want to visualise your GPS raw data, modified them and export as txt file
+- You want to visualise your GPS raw data, modified them and export as txt file.
 
-- You want have a fast preview of your GPS data on a map which can be done with a render of the folium HTML web page or using the powerfull Generic Mapping Tool (GMT). The creation of a Flask project is also possible.
+- You want to show your GPS data on a map which can be done with a render of the folium HTML web page (depending on your browser this fuction might not work) or using the powerfull Generic Mapping Tool (GMT) for a more professional result. 
 
-- You need to convert GPS data to other formats (for example the tracks/waypoints of your outdoor activity) for further processing/scopes you could have.
+- You want to create a Flask project to be run in your local network or in a server and then make it avaiable outside your local network.
+
+- You need to convert GPS data (as CSV or GPX) to other formats (for example the tracks/waypoints of your outdoor activity) for further processing/scopes you could have.
 
 - You want to visualize your data using the native Google Earth engine extention (KML/KMZ)
 
-- You want to generate an HTML file ready for be embedded in your website or published into a server. 
+- You want to generate an HTML file ready for be embedded in your website. 
 
-and many more.... 
+and many more can be added.... 
 
 **Inside the project folder (GPSconverter)/DATA you can find a "test_data" folder with inside a GPX file so to be able to use the application and verify that all work well.**
 
@@ -49,7 +50,7 @@ conda activate GPSX
 
 Once you installed the anaconda environment you should be able to have all the packages needed instaled (The GPSconverter Application too!). 
 
-If for some reason you want to install it using just pypi repository (be aware that in this case you need to install GMT manually and for that you can find more info [here](https://github.com/GenericMappingTools/gmt/blob/master/INSTALL.md#cross-platform-install-instructions)). The command to install this tool using Pypi is the following:
+If for some reason you want to install GPSconverter using just pypi repository (be aware that in this case you need to install GMT manually,for that you can find more information [here](https://github.com/GenericMappingTools/gmt/blob/master/INSTALL.md#cross-platform-install-instructions)), the command to install this tool is the following:
 
 ```
 pip install GPSconverter
@@ -69,6 +70,8 @@ At this point a GUI interface will pop up and you are ready to go! Below what yo
 
 
 ## Conversions avaiable
+
+- **Convert from CSV to GPX**
 
 - **Convert from GPX to CSV**
 
