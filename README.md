@@ -28,7 +28,7 @@ and many more can be added....
 
 ## Installation
 
-- **The best way** is create an ad-hoc environment using the anaconda environment installer which I tailored to the main operative sistem used. To create with just one command all the packages needed and install the GPSconverter application just run one of the commands below:
+- **The best way** is create an ad-hoc environment using the anaconda environment function which I tailored to the main Operative System (OS) used. To download and install  with just one command all the packages needed including the installation of the GPSconverter application just run one of the commands below:
 
   ```
   conda env create csammarco/GPSX-MacOS  # For Macintosh
@@ -58,7 +58,7 @@ and many more can be added....
   conda activate myenv
   ```
 
-  Now time to install all the dependencies needed by:
+  Now time to install all the dependencies needed by following the order of the commands below:
 
   ```
   conda install gmt fiona -c conda-forge
@@ -78,7 +78,7 @@ GPSconverter
 
 At this point a GUI interface will pop up and you are ready to go! 
 
-Below is what you are going to see for the MacOS (The GUI are a bit different for different OS and it is totally normal):
+Below is what you are going to see for the Macintosh Operative System (The GUI are a bit different for different OS because clearly the GUI is adapting the internal graphical libraries):
 
 <p align="center">
   <img width="" height="200" src="PIC/GUIs.png">
@@ -119,10 +119,8 @@ Below is what you are going to see for the MacOS (The GUI are a bit different fo
 
 **I have still ideas and improvements that can be done ( it is an infinite process and it will never stop for me) but anyway it is a good base to start with... Feel free to "fork" and contribute if you wish!**
 
-Also I am trying to realise a stand-alone executable to run  natively for both Window and MacOS operative systems. However, it is still a working in progress. There is a folder called Script where all is set to make the executable. I tried many tools as py2exe, pyinstaller, py2app but i did not find still a stable recepie. 
-
-Eventually if I will manage and especially if i find the time to dedicate to it, this will be the app icon:
+I hope you like and you find usefull
 
 ![Imgur](https://i.imgur.com/1zIm0KGs.png)
 
-Enjoy :)
+Enjoy! :)
