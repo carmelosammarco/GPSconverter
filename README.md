@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.com/carmelosammarco/GPSconverter.png)](https://travis-ci.com/carmelosammarco/GPSconverter)[![PyPi](https://img.shields.io/badge/PyPi-Project-yellow.svg)](https://pypi.org/project/GPSconverter/)
 
-![Imgur](https://i.imgur.com/jbCBPkh.png)
+<p align="center">
+  <img width="" height="200" src='https://i.imgur.com/jbCBPkh.png'>
+</p>
 
 Python application to manipulate & view GPS data. The tool born while I was doing some trekking because I wanted a fast way to convert and plot all the GPS file saved automatically and with the minimal effort. :) Hope you like it! 
 
@@ -26,46 +28,58 @@ and many more can be added....
 
 ## Installation
 
-The best way is create an ad-hoc environment with the anaconda python distribution and more specifically throught the "yml" file using the following command:
+- **The best way** is create an ad-hoc environment using the anaconda environment installer which I tailored to the main operative sistem used. To create with just one command all the packages needed and install the GPSconverter application just run one of the commands below:
 
-```
-conda env create -f name-environment.yml
-```
+  ```
+  conda env create csammarco/GPSX-MacOS  # For Macintosh
 
-You can download the "yml' file needed (in the above example as name-environment.yml) clicking the badge here below: 
+  conda env create csammarco/GPSX-Win    # For Windows
 
-[![Anaconda-Server Badge](https://anaconda.org/csammarco/gpsx/badges/installer/env.svg)](https://anaconda.org/CSammarco/gpsx)
+  conda env create csammarco/GPSX-Unix   # For Linux distribution (Ubuntu for example)
+  ```
 
-The command to run the process in your machine and using the file previously downloaded is:
+  You can download/view the environment files ".yml" by clicking one of the badges here below: 
 
-```
-conda env create -f GPSX.yml
-```
+  For Macintosh --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-MacOS/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-MacOS)
 
-then to activate the environmet:
+  For Window --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Win/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Win)
 
-```
-conda activate GPSX
-```
+  For Unix distro --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Unix/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Unix)
 
-Once you installed the anaconda environment you should be able to have all the packages needed instaled (The GPSconverter Application too!). 
+- Another way is to install the entire environment manually (which I called "myenv" in the example below). To do so please to run the code in the following order:
 
-If for some reason you want to install GPSconverter using just pypi repository (be aware that in this case you need to install GMT manually,for that you can find more information [here](https://github.com/GenericMappingTools/gmt/blob/master/INSTALL.md#cross-platform-install-instructions)), the command to install this tool is the following:
+  ```
+  conda create --name myenv python=3.8 
+  ```
 
-```
-pip install GPSconverter
-```
+  Activate the environmet created above with:
 
-Anyway, once you decice how to proceed (by conda environment or Pypi repository) to run the application just type on your terminal/command_propt the following:
+  ```
+  conda activate myenv
+  ```
+
+  Now time to install all the dependencies needed by:
+
+  ```
+  conda install gmt fiona -c conda-forge
+
+  pip install GPSconverter
+  ```
+
+**No matter which path you followed, now you have all the packages needed instaled in your envirnment and the GPSconverter Application installed too!** 
+
+**To run the application just type on your terminal/command-propt the following:**
 
 ```
 GPSconverter
 ```
 
-At this point a GUI interface will pop up and you are ready to go! Below what you are going to see for different OS:
+At this point a GUI interface will pop up and you are ready to go! 
+
+Below is what you are going to see for the MacOS (The GUI are a bit different for different OS and it is totally normal):
 
 <p align="center">
-  <img width="" height="380" src="PIC/GUIs.png">
+  <img width="" height="200" src="PIC/GUIs.png">
 </p>
 
 
@@ -75,28 +89,37 @@ At this point a GUI interface will pop up and you are ready to go! Below what yo
 
 - **Convert from GPX to CSV**
 
-- **Convert from GPX to KML/KMZ**
-
 - **Convert from GPX to JSON**
 
 - **Convert from GPX to HTML**
 
-- **Convert from GPX to RASTER**
+- **Convert from GPX to KML/KMZ**
 
-- **Convert from GPX to GeoJSON(Points)**
-
-- **Convert from GPX to GeoJSON(Line)**
+- **Convert from GPX to GeoJSON(LINE)**
 
 - **Convert from GPX to Shapefile(Line)**
 
-- **Convert from GPX to Shapefile(Line)**
+- **Convert from GPX to GeoJSON(POINTS)**
 
-I have still ideas and improvements that can be done ( it is an infinite process and it will never stop for me) but anyway it is a good base to start with... Feel free to "fork" and contribute!
+- **Convert from GPX to Shapefile(POINTS))**
 
+## MAPS avaiable:
 
-## Stand alone version:
+- **GPX to GMT-MAP**
 
-At the moment it is a working in progress. The aim is to be able to realise an executable to run without any python requirements/installation and natively for both Window and MacOS operative systems. However, it is still a working in progress and just application icon is ready.. here below:
+- **CSV to GMT-MAP**
+
+- **HTML to RASTER**
+
+- **HTLM to FLASK-PROJECT**
+
+## Others information:
+
+**I have still ideas and improvements that can be done ( it is an infinite process and it will never stop for me) but anyway it is a good base to start with... Feel free to "fork" and contribute if you wish!**
+
+Also I am trying to realise a stand-alone executable to run  natively for both Window and MacOS operative systems. However, it is still a working in progress. There is a folder called Script where all is set to make the executable. I tried many tools as py2exe, pyinstaller, py2app but i did not find still a stable recepie. 
+
+Eventually if I will manage and especially if i find the time to dedicate to it, this will be the app icon:
 
 ![Imgur](https://i.imgur.com/1zIm0KGs.png)
 
