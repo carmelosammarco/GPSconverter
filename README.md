@@ -63,6 +63,8 @@ and many more can be added....
   ```
   conda install gmt fiona -c conda-forge
 
+  pip install geopandas
+
   pip install GPSconverter
   ```
 

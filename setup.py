@@ -4,7 +4,7 @@ with open('README.md') as readme_file:
     long_description = readme_file.read()
 
 setup(name='GPSconverter',
-      version='0.0.14',
+      version='0.0.15',
       description='Python package for manipulating gps data and easily convert them to other different formats.',
       long_description=long_description,
       long_description_content_type='text/markdown',
@@ -34,7 +34,7 @@ setup(name='GPSconverter',
         'tkmacosx >= 1.0.3',
         'html2image >= 1.1.3',
         #'fiona>= 1.8.4',
-        'geopandas >= 0.9.0',
+        #'geopandas >= 0.9.0',
         'pyshp >= 2.1.3',
         'matplotlib >= 3.4.2',
         'pygmt'

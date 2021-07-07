@@ -168,7 +168,7 @@ dependencies:
     - flask==2.0.1
     - folium==0.12.1
     - geopandas==0.9.0
-    - gpsconverter==0.0.13
+    - gpsconverter==0.0.14
     - gpxpy==1.4.2
     - html2image==2.0.1
     - idna==2.10

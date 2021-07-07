@@ -15,7 +15,9 @@ dependencies:
   - click-plugins=1.1.1=py_0
   - cligj=0.7.2=pyhd8ed1ab_0
   - curl=7.77.0=hb861fe1_0
+  - cycler=0.10.0=py_2
   - dcw-gmt=2.0.0=h694c41f_0
+  - decorator=5.0.9=pyhd8ed1ab_0
   - expat=2.4.1=he49afe7_0
   - ffmpeg=4.3.1=hb787a4c_2
   - fftw=3.3.9=nompi_h02cd531_101
@@ -31,6 +33,8 @@ dependencies:
   - freexl=1.0.6=h0d85af4_0
   - fribidi=1.0.10=hbcb3906_0
   - gdal=3.3.1=py38h140b4a6_0
+  - geopandas=0.9.0=pyhd8ed1ab_1
+  - geopandas-base=0.9.0=pyhd8ed1ab_1
   - geos=3.9.1=he49afe7_2
   - geotiff=1.6.0=h26421ea_6
   - gettext=0.19.8.1=h7937167_1005
@@ -50,11 +54,14 @@ dependencies:
   - hdf5=1.10.6=nompi_hc5d9132_1114
   - icu=68.1=h74dc148_0
   - jbig=2.1=h0d85af4_2003
+  - joblib=1.0.1=pyhd8ed1ab_0
   - jpeg=9d=hbcb3906_0
   - json-c=0.15=hcb556a6_0
   - kealib=1.4.14=h31dd65d_2
+  - kiwisolver=1.3.1=py38h12bbefe_1
   - krb5=1.19.1=hcfbf3a7_0
   - lame=3.100=h35c211d_1001
+  - lcms2=2.12=h577c468_0
   - lerc=2.2.1=h046ec9c_0
   - libblas=3.9.0=9_openblas
   - libcblas=3.9.0=9_openblas
@@ -81,6 +88,7 @@ dependencies:
   - libpng=1.6.37=h7cec526_2
   - libpq=13.3=hea3049e_0
   - librttopo=1.1.0=h5413771_6
+  - libspatialindex=1.9.3=h1c7c35f_3
   - libspatialite=5.0.1=h035f608_5
   - libssh2=1.9.0=h52ee1ee_6
   - libtiff=4.3.0=h1167814_1
@@ -90,35 +98,50 @@ dependencies:
   - libzip=1.8.0=h8b0c345_0
   - llvm-openmp=11.1.0=hda6cdc1_1
   - lz4-c=1.9.3=h046ec9c_0
+  - mapclassify=2.4.2=pyhd8ed1ab_0
+  - matplotlib-base=3.4.2=py38h6152e83_0
   - munch=2.5.0=py_0
   - mysql-common=8.0.25=h694c41f_2
   - mysql-libs=8.0.25=h115446f_2
   - ncurses=6.2=h0a44026_1
   - nettle=3.6=hedd7734_0
+  - networkx=2.3=py_0
   - nspr=4.30=hcd9eead_0
   - nss=3.67=h31e2bf1_0
   - numpy=1.21.0=py38had91d27_0
+  - olefile=0.46=pyh9f0ad1d_1
   - openh264=2.1.1=hfd3ada9_0
   - openjpeg=2.4.0=h6e7aa92_1
   - openssl=1.1.1k=h0d85af4_0
+  - pandas=1.3.0=py38h1f261ad_0
   - pango=1.48.7=ha05cd14_0
   - pcre=8.45=he49afe7_0
+  - pillow=8.3.0=py38hee640a0_0
   - pip=21.1.3=py38hecd8cb5_0
   - pixman=0.40.0=hbcb3906_0
   - poppler=21.03.0=h640f9a4_0
   - poppler-data=0.4.10=0
   - postgresql=13.3=he8fe76e_0
   - proj=8.0.1=h1512c50_0
+  - pyparsing=2.4.7=pyh9f0ad1d_0
+  - pyproj=3.1.0=py38hccc5ee5_3
   - python=3.8.10=h88f2d9e_7
+  - python-dateutil=2.8.1=py_0
   - python_abi=3.8=2_cp38
+  - pytz=2021.1=pyhd8ed1ab_0
   - qt=5.12.9=h126340a_4
   - readline=8.1=h9ed2024_0
+  - rtree=0.9.7=py38hc59ffc2_1
+  - scikit-learn=0.24.2=py38h011f2c5_0
+  - scipy=1.7.0=py38h431c0a8_0
   - setuptools=52.0.0=py38hecd8cb5_0
   - shapely=1.7.1=py38h5786f56_5
   - six=1.16.0=pyh6c4a22f_0
   - sqlite=3.36.0=hce871da_0
+  - threadpoolctl=2.1.0=pyh5ca1d4c_0
   - tiledb=2.3.1=h8370e7a_0
   - tk=8.6.10=hb0a8c7a_0
+  - tornado=6.1=py38h96a0964_1
   - tzcode=2021a=h0d85af4_1
   - tzdata=2021a=he74cb21_0
   - wheel=0.36.2=pyhd3eb1b0_0
@@ -132,31 +155,20 @@ dependencies:
     - cftime==1.5.0
     - chardet==4.0.0
     - colour==0.1.5
-    - cycler==0.10.0
     - flask==2.0.1
     - folium==0.12.1
-    - geopandas==0.9.0
-    - gpsconverter==0.0.13
+    - gpsconverter==0.0.14
     - gpxpy==1.4.2
     - html2image==2.0.1
     - idna==2.10
     - itsdangerous==2.0.1
     - jinja2==3.0.1
-    - kiwisolver==1.3.1
     - markupsafe==2.0.1
-    - matplotlib==3.4.2
     - netcdf4==1.5.7
     - packaging==21.0
-    - pandas==1.3.0
-    - pillow==8.3.1
     - pygmt==0.4.0
-    - pyparsing==2.4.7
-    - pyproj==3.1.0
     - pyshp==2.1.3
-    - python-dateutil==2.8.1
-    - pytz==2021.1
     - requests==2.25.1
-    - scipy==1.7.0
     - simplekml==1.3.5
     - tkmacosx==1.0.3
     - urllib3==1.26.6

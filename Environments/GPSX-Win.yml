@@ -10,6 +10,7 @@ dependencies:
   - cairo=1.16.0=hb19e0ff_1008
   - certifi=2021.5.30=py38haa244fe_0
   - cfitsio=3.470=h0af3d06_7
+  - click=7.1.2=pyh9f0ad1d_0
   - click-plugins=1.1.1=py_0
   - cligj=0.7.2=pyhd8ed1ab_0
   - curl=7.77.0=h789b8ee_0
@@ -90,14 +91,12 @@ dependencies:
     - branca==0.4.2
     - cftime==1.5.0
     - chardet==4.0.0
-    - click==8.0.1
-    - colorama==0.4.4
     - colour==0.1.5
     - cycler==0.10.0
     - flask==2.0.1
     - folium==0.12.1
     - geopandas==0.9.0
-    - gpsconverter==0.0.13
+    - gpsconverter==0.0.14
     - gpxpy==1.4.2
     - html2image==2.0.1
     - idna==2.10
