@@ -4,7 +4,7 @@ with open('README.md') as readme_file:
     long_description = readme_file.read()
 
 setup(name='GPSconverter',
-      version='0.0.13',
+      version='0.0.14',
       description='Python package for manipulating gps data and easily convert them to other different formats.',
       long_description=long_description,
       long_description_content_type='text/markdown',
