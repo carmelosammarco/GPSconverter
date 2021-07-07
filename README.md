@@ -97,7 +97,7 @@ Below is what you are going to see for the MacOS (The GUI are a bit different fo
 
 - **Convert from GPX to GeoJSON(LINE)**
 
-- **Convert from GPX to Shapefile(Line)**
+- **Convert from GPX to Shapefile(LINE)**
 
 - **Convert from GPX to GeoJSON(POINTS)**
 

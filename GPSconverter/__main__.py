@@ -628,16 +628,16 @@ if __name__ == '__main__':
     space = Label(tab4, text="")
     space.pack()
     ###
-    btn = Button(tab4, text="GPX TO MAP", bg="deep sky blue", command=viewGMTgpx)  
+    btn = Button(tab4, text="GPX TO GMT-MAP", bg="deep sky blue", command=viewGMTgpx)  
     btn.pack()
     ###
-    btn = Button(tab4, text="CSV TO MAP", bg="deep sky blue", command=viewGMTcsv)  
+    btn = Button(tab4, text="CSV TO GMT-MAP", bg="deep sky blue", command=viewGMTcsv)  
     btn.pack()
     ###
-    btn = Button(tab4, text="HTML-RENDER", bg="deep sky blue", command=previewfromhtml)  
+    btn = Button(tab4, text="HTML to RASTER", bg="deep sky blue", command=previewfromhtml)  
     btn.pack()
     ###
-    btn = Button(tab4, text="FLASK PROJECT", bg="deep sky blue", command=publish_map)  
+    btn = Button(tab4, text="HTML to FLASK-PROJECT", bg="deep sky blue", command=publish_map)  
     btn.pack()
     ###
 
