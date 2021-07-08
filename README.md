@@ -44,7 +44,7 @@ and many more can be added....
 
   For Window --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Win/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Win)
 
-  For Unix distro --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Unix/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Unix)
+  For Unix distro --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Unix/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Unix) [![Join the chat at https://gitter.im/GPSconverter/community](https://badges.gitter.im/GPSconverter/community.svg)](https://gitter.im/GPSconverter/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 - Another way is to install the entire environment manually (which I called "myenv" in the example below). To do so please to run the code in the following order:
 
