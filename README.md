@@ -1,6 +1,6 @@
 # GPSconverter (Global-Positioning-System Converter)
 
-[![Build Status](https://travis-ci.com/carmelosammarco/GPSconverter.png)](https://travis-ci.com/carmelosammarco/GPSconverter)[![PyPi](https://img.shields.io/badge/PyPi-Project-yellow.svg)](https://pypi.org/project/GPSconverter/)
+[![Build Status](https://travis-ci.com/carmelosammarco/GPSconverter.png)](https://travis-ci.com/carmelosammarco/GPSconverter)[![PyPi](https://img.shields.io/badge/PyPi-Project-yellow.svg)](https://pypi.org/project/GPSconverter/) [![Join the chat at https://gitter.im/GPSconverter/community](https://badges.gitter.im/GPSconverter/community.svg)](https://gitter.im/GPSconverter/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <p align="center">
   <img width="" height="200" src='https://i.imgur.com/jbCBPkh.png'>
@@ -44,7 +44,7 @@ and many more can be added....
 
   For Window --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Win/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Win)
 
-  For Unix distro --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Unix/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Unix) [![Join the chat at https://gitter.im/GPSconverter/community](https://badges.gitter.im/GPSconverter/community.svg)](https://gitter.im/GPSconverter/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+  For Unix distro --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Unix/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Unix)
 
 - Another way is to install the entire environment manually (which I called "myenv" in the example below). To do so please to run the code in the following order:
 
