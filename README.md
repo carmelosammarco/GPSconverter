@@ -49,9 +49,7 @@ and many more can be added....
   Now time to install all the dependencies needed by following the order of the commands below:
 
   ```
-  conda install gmt fiona -c conda-forge
-
-  pip install geopandas
+  conda install -c conda-forge gmt geopandas 
 
   pip install GPSconverter
   ```
