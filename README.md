@@ -28,23 +28,11 @@ and many more can be added....
 
 ## Installation
 
-- **The best way** is create an ad-hoc environment using the anaconda environment function which I tailored to the main Operative System (OS) used. To download and install  with just one command all the packages needed including the installation of the GPSconverter application just run one of the commands below:
+- **The best way** is create an ad-hoc environment using the anaconda environment function which I tailored to the main Operative System (OS) used. To download and install  with just one command all the packages needed including the installation of the GPSconverter application just run the command below after have downloaded the GPSconverter.yml file corrispective  [HERE](https://anaconda.org/CSammarco/GPSconverter/files) and related to your operative system (OS value written in the "TAG" parameter: Mac, Win and UNIX-tested on linux Ubuntu-) 
 
   ```
-  conda env create csammarco/GPSX-MacOS  # For Macintosh
-
-  conda env create csammarco/GPSX-Win    # For Windows
-
-  conda env create csammarco/GPSX-Unix   # For Linux distribution (Ubuntu for example)
+  conda env create -f GPSconverter.yml  
   ```
-
-  You can download/view the environment files ".yml" by clicking one of the badges here below: 
-
-  For Macintosh --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-MacOS/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-MacOS)
-
-  For Window --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Win/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Win)
-
-  For Unix distro --> [![Anaconda-Server Badge](https://anaconda.org/csammarco/GPSX-Unix/badges/installer/env.svg)](https://anaconda.org/CSammarco/GPSX-Unix)
 
 - Another way is to install the entire environment manually (which I called "myenv" in the example below). To do so please to run the code in the following order:
 
