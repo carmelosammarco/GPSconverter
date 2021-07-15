@@ -1,4 +1,5 @@
 from tkinter.constants import TRUE
+from pandas.core import series
 import pkg_resources
 import gpxpy
 import pandas as pd
@@ -86,63 +87,213 @@ def main(args=None):
         messagebox.showinfo('FYI', 'File Saved.')
     
     def CSVtoGPX():
+        Home_dir = selfolder.Home_dir
         CSV = selfile.input_file
         df = pd.read_csv(CSV) 
         Latitude = [] #0
         Longitude = [] #1
         Elevation = [] #2
-        Time = [] #3	
-        for n in range(0,len(CSV)):
-            with open(CSV,encoding='utf-8',mode='r') as csvfile: #closes file automatically with completion of block
-                csvdata = csv.reader(csvfile, delimiter=',')		        
-        for index, row in df.iterrows():
-            Latitude.append(row[0])
-            Longitude.append(row[1])
-            Elevation.append(row[2])
-            Time.append(row[3])
-        with open(selfolder.Home_dir + "/Output.gpx", encoding='utf-8', mode='w') as of:	
-            #header
-            of.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
-            of.write("\n")
-            of.write('<gpx version="1.1" creator="GPSconverter https://github.com/carmelosammarco/GPSconverter">') 
-            of.write("\n")
-            of.write("<trk>")
-            of.write("\n")
-            of.write("  <name>Output</name>")
-            of.write("\n")
-            of.write("  <trkseg>")
-            of.write("\n")
-            #write trackpoints here
-            for i in range(0, len(Latitude)):
-                # #lat,lon
-                of.write("    <trkpt lat=\"")
-                of.write('%.15f' % Latitude[i])
-                of.write("\" lon=\"")
-                of.write('%.15f' % Longitude[i])
-                of.write("\">\n")
-                #Elevation
-                if(Elevation[i]):
-                    of.write("      <ele>")
-                    of.write(str(Elevation[i]))
-                    of.write("</ele>\n")
-                else:
-                    of.write("      <ele>")
-                    of.write(str(0))
-                    of.write("</ele>\n")
-                #time
-                if(len(Time[i])>0):
-                    of.write("      <time>")
-                    of.write(Time[i])
-                    of.write("</time>\n")
-                    #of.write("\n")
+        Time = [] #3
+
+        lat = len(df['Latitude'])
+        long = len(df['Longitude'])
+        try:
+            El = len(df['Elevation'])
+        except KeyError:
+            El = 0
+        try:
+            Tim = len(df['Time'])
+        except KeyError:
+            Tim = 0
+
+
+        if lat>0 and long>0 and El>0 and Tim>0 :
+        
+            for n in range(0,len(CSV)):
+                with open(CSV,encoding='utf-8',mode='r') as csvfile: 
+                    csvdata = csv.reader(csvfile, delimiter=',')
+        
+            for index, row in df.iterrows():
+                Latitude.append(row[0])
+                Longitude.append(row[1])
+                Elevation.append(row[2])
+                Time.append(row[3])
+
+            with open(Home_dir + "/Output.gpx", encoding='utf-8', mode='w') as of:	
+                #header
+                of.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
+                of.write("\n")
+                of.write('<gpx version="1.1" creator="GPSconverter https://github.com/carmelosammarco/GPSconverter">') 
+                of.write("\n")
+                of.write("<trk>")
+                of.write("\n")
+                of.write("  <name>Output</name>")
+                of.write("\n")
+                of.write("  <trkseg>")
+                of.write("\n")
+                #write trackpoints here
+                for i in range(0, len(Latitude)):
+                    # #lat,lon
+                    of.write("    <trkpt lat=\"")
+                    of.write('%.15f' % Latitude[i])
+                    of.write("\" lon=\"")
+                    of.write('%.15f' % Longitude[i])
+                    of.write("\">\n")
+                    #Elevation
+                    if(Elevation[i]):
+                        of.write("      <ele>")
+                        of.write(str(Elevation[i]))
+                        of.write("</ele>\n")
+                    else:
+                        of.write("      <ele>")
+                        of.write(str(0))
+                        of.write("</ele>\n")
+                    #time
+                    if(len(Time[i])>0):
+                        of.write("      <time>")
+                        of.write(Time[i])
+                        of.write("</time>\n")
+                        #of.write("\n")
+                        of.write("    </trkpt>")
+                        of.write("\n")    
+                #end of file
+                of.write("  </trkseg>")
+                of.write("\n")
+                of.write("</trk>")
+                of.write("\n")
+                of.write("</gpx>")
+        
+        if lat>0 and long>0 and El==0 and Tim>0 :
+
+            for n in range(0,len(CSV)):
+                with open(CSV,encoding='utf-8',mode='r') as csvfile: 
+                    csvdata = csv.reader(csvfile, delimiter=',')
+
+            for index, row in df.iterrows():
+                    Latitude.append(row[0])
+                    Longitude.append(row[1])
+                    Time.append(row[2])
+
+            with open(Home_dir + "/Output.gpx", encoding='utf-8', mode='w') as of:	
+                    #header
+                    of.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
+                    of.write("\n")
+                    of.write('<gpx version="1.1" creator="GPSconverter https://github.com/carmelosammarco/GPSconverter">') 
+                    of.write("\n")
+                    of.write("<trk>")
+                    of.write("\n")
+                    of.write("  <name>Output</name>")
+                    of.write("\n")
+                    of.write("  <trkseg>")
+                    of.write("\n")
+                    #write trackpoints here
+                    for i in range(0, len(Latitude)):
+                        # #lat,lon
+                        of.write("    <trkpt lat=\"")
+                        of.write('%.15f' % Latitude[i])
+                        of.write("\" lon=\"")
+                        of.write('%.15f' % Longitude[i])
+                        of.write("\">\n")
+                        #time
+                        if(len(Time[i])>0):
+                            of.write("      <time>")
+                            of.write(Time[i])
+                            of.write("</time>\n")
+                            #of.write("\n")
+                            of.write("    </trkpt>")
+                            of.write("\n")    
+                    #end of file
+                    of.write("  </trkseg>")
+                    of.write("\n")
+                    of.write("</trk>")
+                    of.write("\n")
+                    of.write("</gpx>")
+        
+        if lat>0 and long>0 and El>0 and Tim==0 :
+
+            for n in range(0,len(CSV)):
+                with open(CSV,encoding='utf-8',mode='r') as csvfile: 
+                    csvdata = csv.reader(csvfile, delimiter=',')
+    
+            for index, row in df.iterrows():
+                Latitude.append(row[0])
+                Longitude.append(row[1])
+                Elevation.append(row[2])
+
+            with open(Home_dir + "/Output.gpx", encoding='utf-8', mode='w') as of:	
+                #header
+                of.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
+                of.write("\n")
+                of.write('<gpx version="1.1" creator="GPSconverter https://github.com/carmelosammarco/GPSconverter">') 
+                of.write("\n")
+                of.write("<trk>")
+                of.write("\n")
+                of.write("  <name>Output</name>")
+                of.write("\n")
+                of.write("  <trkseg>")
+                of.write("\n")
+                #write trackpoints here
+                for i in range(0, len(Latitude)):
+                    # #lat,lon
+                    of.write("    <trkpt lat=\"")
+                    of.write('%.15f' % Latitude[i])
+                    of.write("\" lon=\"")
+                    of.write('%.15f' % Longitude[i])
+                    of.write("\">\n")
+                    #Elevation
+                    if(Elevation[i]):
+                        of.write("      <ele>")
+                        of.write(str(Elevation[i]))
+                        of.write("</ele>\n")
+                    
+                        #of.write("\n")
+                        of.write("    </trkpt>")
+                        of.write("\n")    
+                #end of file
+                of.write("  </trkseg>")
+                of.write("\n")
+                of.write("</trk>")
+                of.write("\n")
+                of.write("</gpx>")
+        
+        if lat>0 and long>0 and El==0 and Tim==0 :
+
+            for n in range(0,len(CSV)):
+                with open(CSV,encoding='utf-8',mode='r') as csvfile: 
+                    csvdata = csv.reader(csvfile, delimiter=',')
+    
+            for index, row in df.iterrows():
+                Latitude.append(row[0])
+                Longitude.append(row[1])
+
+            with open(Home_dir + "/Output.gpx", encoding='utf-8', mode='w') as of:	
+                #header
+                of.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>')
+                of.write("\n")
+                of.write('<gpx version="1.1" creator="GPSconverter https://github.com/carmelosammarco/GPSconverter">') 
+                of.write("\n")
+                of.write("<trk>")
+                of.write("\n")
+                of.write("  <name>Output</name>")
+                of.write("\n")
+                of.write("  <trkseg>")
+                of.write("\n")
+                #write trackpoints here
+                for i in range(0, len(Latitude)):
+                    # #lat,lon
+                    of.write("    <trkpt lat=\"")
+                    of.write('%.15f' % Latitude[i])
+                    of.write("\" lon=\"")
+                    of.write('%.15f' % Longitude[i])
+                    of.write("\">\n")
                     of.write("    </trkpt>")
                     of.write("\n")    
-            #end of file
-            of.write("  </trkseg>")
-            of.write("\n")
-            of.write("</trk>")
-            of.write("\n")
-            of.write("</gpx>")
+                #end of file
+                of.write("  </trkseg>")
+                of.write("\n")
+                of.write("</trk>")
+                of.write("\n")
+                of.write("</gpx>")
 
     def GPXtoCSV():
         GPSfile=selfile.input_file
@@ -360,18 +511,15 @@ def main(args=None):
         #pointxmean = df.Longitude.mean()
         #pointymean = df.Latitude.mean() 
         rectangle = [[region[0], region[2], region[1], region[3]]]
-        #pygmt.config(MAP_FRAME_TYPE="plain")
         pygmt.config(FORMAT_GEO_MAP="ddd.xx")
-        #define topo data file and CPTs
         topo_data = '@earth_relief_30s' 
-        #topo_data = 'add a local one in app... ??'
-        #CPTtopo = ' add a local one in app... ??'
-        CPTtopo = 'dem4'   
         proj = "M20c"
         fig = pygmt.Figure()
         pygmt.grdcut(grid=topo_data, outgrid=selfolder.Home_dir  + '/topo.grd', region=region)
-        pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo, continuous=True) 
-        fig.basemap(region=region, projection=proj, frame=[ "a", "+tGPX-MAP"])
+        #infgrid = pygmt.grdinfo(grid = selfolder.Home_dir  + '/topo.grd')
+        #pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo, continuous=True) 
+        CPTtopo = pygmt.makecpt(cmap='dem3', series=[-100, 4000])
+        fig.basemap(region=region, projection=proj, frame=[ "a", "+tCSV-MAP"])
         fig.grdimage( 
             grid=selfolder.Home_dir  + '/topo.grd', 
             cmap=CPTtopo,
@@ -392,9 +540,9 @@ def main(args=None):
         )
         fig.grdcontour(
             #annotation=500,
-            interval=200,
+            interval=100,
             grid=topo_data,
-            limit=[0, 5000],
+            limit=[0, 4000],
             projection=proj,
             frame='a'
         )
@@ -405,7 +553,7 @@ def main(args=None):
         ) 
         #fig.plot(x=pointx, y=pointy, style="c1c", color="red", pen="black", frame='a')
         fig.colorbar(
-            frame=['a', "x+lElevation"]
+            frame=['a', "x+lElevation", "y+lmeters"]
         )
         ################################################
         with fig.inset(position="jBL+w4.6c/3c+o0.2c/0.2c", box="+gwhite+p2p"):
@@ -461,20 +609,15 @@ def main(args=None):
             df.Longitude.max() +zoominsregion_scale, 
             df.Latitude.min()  -(zoominsregion_scale/2),
             df.Latitude.max()  +(zoominsregion_scale/2), ]
-        #pointxmean = df.Longitude.mean()
-        #pointymean = df.Latitude.mean() 
         rectangle = [[region[0], region[2], region[1], region[3]]]
-        #pygmt.config(MAP_FRAME_TYPE="plain")
         pygmt.config(FORMAT_GEO_MAP="ddd.xx")
-        #define topo data file and CPTs
         topo_data = '@earth_relief_30s' 
-        #topo_data = 'add a local one in app... ??'
-        #CPTtopo = ' add a local one in app... ??'
-        CPTtopo = 'dem4'   
         proj = "M20c"
         fig = pygmt.Figure()
         pygmt.grdcut(grid=topo_data, outgrid=selfolder.Home_dir  + '/topo.grd', region=region)
-        pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo, continuous=True) 
+        #infgrid = pygmt.grdinfo(grid = selfolder.Home_dir  + '/topo.grd')
+        #pygmt.grd2cpt(grid=selfolder.Home_dir + '/topo.grd', region=region, cmap=CPTtopo, continuous=True) 
+        CPTtopo = pygmt.makecpt(cmap='dem3', series=[-100, 4000])
         fig.basemap(region=region, projection=proj, frame=[ "a", "+tGPX-MAP"])
         fig.grdimage( 
             grid=selfolder.Home_dir  + '/topo.grd', 
@@ -496,9 +639,9 @@ def main(args=None):
         )
         fig.grdcontour(
             #annotation=500,
-            interval=200,
+            interval=100,
             grid=topo_data,
-            limit=[0, 5000],
+            limit=[0, 4000],
             projection=proj,
             frame='a'
         )
@@ -509,7 +652,7 @@ def main(args=None):
         ) 
         #fig.plot(x=pointx, y=pointy, style="c1c", color="red", pen="black", frame='a')
         fig.colorbar(
-            frame=['a', "x+lElevation"]
+            frame=['a', "x+lElevation", "y+lmeters"]
         )
         ################################################
         with fig.inset(position="jBL+w4.6c/3c+o0.2c/0.2c", box="+gwhite+p2p"):
