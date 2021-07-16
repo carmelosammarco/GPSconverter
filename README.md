@@ -70,29 +70,48 @@ Below is what you are going to see for the Macintosh Operative System (The GUI a
   <img width="" height="600" src="PIC/GUIs.png">
 </p>
 
-**TAB-1 INPUT :** You can select the starting CSV/GPX file to working with. You can view it and modify it if you wish. furthermore you can decide to export the editing as a txt file.
+**TAB-1 INPUT :** You can select the starting CSV/GPX file to working with. You can view it and modify it if you wish. furthermore you can decide to export the editing as a txt file. 
 
 **TAB-2 CSV-CONVERTER:** If the starting/input file is a CSV then you can convert it in GPX (at this point you unlock many others possibilities of conversions, see TAB-3 below).
 
+CSV columns (from left to right) needs to have the following order:
+
+1) Latitude
+2) Longitude
+3) Elevation
+4) Time
+
+Also if **Elevation** and **Time** are missing in the CSV, the GPX file is generated!
+
 **TAB-3 GPX-CONVERTER:** It allow you to convert GPX. Below all the possibilities available:
 
-Convert from GPX to CSV
-Convert from GPX to JSON
-Convert from GPX to HTML
-Convert from GPX to KML/KMZ
-Convert from GPX to GeoJSON (LINE)
-Convert from GPX to Shapefile (LINE)
-Convert from GPX to GeoJSON (POINTS)
-Convert from GPX to Shapefile (POINTS)
+- Convert from GPX to CSV
+
+- Convert from GPX to JSON
+
+- Convert from GPX to HTML
+
+- Convert from GPX to KML/KMZ
+
+- Convert from GPX to GeoJSON (LINE)
+
+- Convert from GPX to Shapefile (LINE)
+
+- Convert from GPX to GeoJSON (POINTS)
+
+- Convert from GPX to Shapefile (POINTS)
 
 **TAB-4 MAPS:** It allows to convert as a map GPX/CSV data. Below a list of the possibilities available:
 
-GPX to GMT-MAP
-CSV to GMT-MAP
-HTML to RASTER
-HTML to FLASK-PROJECT
+- GPX to GMT-MAP
 
-## Others information:
+- CSV to GMT-MAP
+
+- HTML to RASTER
+
+- HTML to FLASK-PROJECT
+
+## Others information
 
 **I have still ideas and improvements that can be done ( it is an infinite process and it will never stop for me) but anyway it is a good base to start with... Feel free to "fork" and contribute if you wish!**
 
