@@ -105,7 +105,7 @@ Below is what you are going to see for the Macintosh Operative System (The GUI a
 
 **I have still ideas and improvements that can be done ( it is an infinite process and it will never stop for me) but anyway it is a good base to start with... Feel free to "fork" and contribute if you wish!**
 
-I hope you like and you find usefull, here below an usage video example. The starting data will be a CSV file. I will view it before convert it to GPX and realise an high quality overview topographic map. Then I will convert as KML/KMZ  to be visualised on google earth for a more interactive viewing. But much more can be done. It is very intuitive, just explore the different functions!
+I hope you like and you find usefull, here below an usage video (jusck cllick on the image below to be linked to the youtube-video) of what can be considered a small and simple example of the GPSconverter's usage. We start with a CSV file. I will view it before converting it to GPX. I will produce an high quality overview of the GPX data on a topographic map. Then I will convert the GPX file as KML/KMZ  to be easily visualised on Google Earth. I will stop here but much more can be done... It is very intuitive, just explore the tools and If you want to know more just contact me.
 
 
 <div align="center">
