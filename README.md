@@ -67,7 +67,7 @@ At this point a GUI interface will pop up and you are ready to go!
 Below is what you are going to see for the Macintosh Operative System (The GUI are a bit different for different OS because clearly the GUI is adapting the internal graphical libraries):
 
 <p align="center">
-  <img width="" height="500" src="PIC/GUIs.png">
+  <img width="" height="700" src="PIC/GUIs.png">
 </p>
 
 
