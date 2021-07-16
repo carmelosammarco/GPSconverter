@@ -70,36 +70,27 @@ Below is what you are going to see for the Macintosh Operative System (The GUI a
   <img width="" height="600" src="PIC/GUIs.png">
 </p>
 
+**TAB-1 INPUT :** You can select the starting CSV/GPX file to working with. You can view it and modify it if you wish. furthermore you can decide to export the editing as a txt file.
 
-## Conversions avaiable
+**TAB-2 CSV-CONVERTER:** If the starting/input file is a CSV then you can convert it in GPX (at this point you unlock many others possibilities of conversions, see TAB-3 below).
 
-- **Convert from CSV to GPX**
+**TAB-3 GPX-CONVERTER:** It allow you to convert GPX. Below all the possibilities available:
 
-- **Convert from GPX to CSV**
+Convert from GPX to CSV
+Convert from GPX to JSON
+Convert from GPX to HTML
+Convert from GPX to KML/KMZ
+Convert from GPX to GeoJSON (LINE)
+Convert from GPX to Shapefile (LINE)
+Convert from GPX to GeoJSON (POINTS)
+Convert from GPX to Shapefile (POINTS)
 
-- **Convert from GPX to JSON**
+**TAB-4 MAPS:** It allows to convert as a map GPX/CSV data. Below a list of the possibilities available:
 
-- **Convert from GPX to HTML**
-
-- **Convert from GPX to KML/KMZ**
-
-- **Convert from GPX to GeoJSON(LINE)**
-
-- **Convert from GPX to Shapefile(LINE)**
-
-- **Convert from GPX to GeoJSON(POINTS)**
-
-- **Convert from GPX to Shapefile(POINTS))**
-
-## MAPS avaiable:
-
-- **GPX to GMT-MAP**
-
-- **CSV to GMT-MAP**
-
-- **HTML to RASTER**
-
-- **HTLM to FLASK-PROJECT**
+GPX to GMT-MAP
+CSV to GMT-MAP
+HTML to RASTER
+HTML to FLASK-PROJECT
 
 ## Others information:
 
