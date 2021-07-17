@@ -32,9 +32,8 @@ import pygmt
 
 
 def main(args=None):
-
     window = Tk()
-
+    
     image = pkg_resources.resource_filename('GPSconverter', 'DATA/LOGO.gif')
     photo = PhotoImage(file=image)
     w = photo.width()
@@ -64,8 +63,10 @@ def main(args=None):
     def selfile():
         selfile.input_file = filedialog.askopenfilename()
 
+
     def selfolder():
         selfolder.Home_dir = filedialog.askdirectory()
+
 
     def viewinput():
         global txt
@@ -78,7 +79,8 @@ def main(args=None):
         txt.insert(INSERT,text)
         btn = Button(windowpop, text="EXPORT AS .TXT FILE", bg="yellow", command=exportdata)
         btn.pack()
-    
+
+
     def exportdata():
         file = selfolder.Home_dir + "/Export.txt"
         f = open(file, 'w')
@@ -488,6 +490,7 @@ def main(args=None):
                 of.write("\n")
                 of.write("</gpx>")
 
+
     def GPXtoCSV():
         GPSfile=selfile.input_file
         data = open(GPSfile).read()
@@ -515,6 +518,7 @@ def main(args=None):
             combined = np.array(list(zip(lat,lon,ele,time)))
             df = pd.DataFrame(combined, columns = ['Latitude','Longitude','Elevation','Time'])
             df.to_csv(fileout, index=False)
+
 
     def GPXtoJSON():
         GPSfile=selfile.input_file
@@ -546,6 +550,7 @@ def main(args=None):
             df = pd.DataFrame(combined, columns = ['Latitude','Longitude','Elevation','Time'])
             df.to_json(fileout)
 
+
     def GPXtoGEOJSONpoint():
         GPXtoCSV()
         filein = selfolder.Home_dir + "/Output.csv"
@@ -568,7 +573,8 @@ def main(args=None):
         with open(selfolder.Home_dir + "/Points.geojson", 'w') as f:
             f.write(json.dumps(geojson, indent=2))
         os.remove(selfolder.Home_dir + "/Output.csv")
-    
+
+
     def GPXtoGEOJASONtrack():
         GPXtoCSV()
         filein = selfolder.Home_dir + "/Output.csv"
@@ -594,20 +600,23 @@ def main(args=None):
             f.write(json.dumps(geojson, indent=4))
         os.remove(selfolder.Home_dir + "/Output.csv")
   
+
     def GPXtoshp_point():
         GPXtoGEOJSONpoint()
         infile = selfolder.Home_dir + "/Points.geojson"
         gdf = gpd.read_file(infile)
         gdf.to_file(selfolder.Home_dir + "/Points.shp")
         os.remove(selfolder.Home_dir + "/Points.geojson")
-    
+
+
     def GPXtoshp_line():
         GPXtoGEOJASONtrack()
         infile = selfolder.Home_dir + "/Track.geojson"
         gdf = gpd.read_file(infile)
         gdf.to_file(selfolder.Home_dir + "/Track.shp")
         os.remove(selfolder.Home_dir + "/Track.geojson")
-   
+
+
     def GPXtoKmz():
         GPXtoCSV()
         filein = selfolder.Home_dir + "/Output.csv"
@@ -628,35 +637,70 @@ def main(args=None):
         kml.save(selfolder.Home_dir +'/Output.kmz')
         os.remove(selfolder.Home_dir + "/Output.csv")
 
+
     def generate_html():
-        GPSfile=selfile.input_file
-        gpx = gpxpy.parse(open(GPSfile)) 
-        #(1)make DataFrame
-        track = gpx.tracks[0]
-        segment = track.segments[0]
-        # Load the data into a Pandas dataframe (by way of a list)
-        data = []
-        #segment_length = segment.length_3d()
-        for point_idx, point in enumerate(segment.points):
-            data.append([point.longitude, point.latitude,point.elevation,point.time, segment.get_speed(point_idx)])
-            columns = ['Longitude', 'Latitude', 'Altitude', 'Time', 'Speed']
-            df = pd.DataFrame(data, columns=columns)
-        #2(make points tuple for line)
-        points = []
-        for track in gpx.tracks:
-            for segment in track.segments: 
-                for point in segment.points:
-                    points.append(tuple([point.latitude, point.longitude]))   
-        mappa = folium.Map(location=[df.Latitude.mean(), df.Longitude.mean()], tiles=None, zoom_start=12, control_scale=True, control=True)
-        track = folium.PolyLine(points, color="blue", weight=5, popup="Track")
-        track.add_to(mappa)
-        folium.TileLayer('openstreetmap', name='OpenStreetMap').add_to(mappa)
-        folium.TileLayer('stamenterrain', name='Terrain').add_to(mappa)
-        folium.TileLayer('Stamen Toner', name='Black&White').add_to(mappa)
-        folium.LayerControl().add_to(mappa)
-        mappa.add_child(folium.LatLngPopup())
-        mappa.save(selfolder.Home_dir + "/index.html", 'w')
-    
+        try:
+            GPSfile=selfile.input_file
+            gpx = gpxpy.parse(open(GPSfile)) 
+            #(1)make DataFrame
+            track = gpx.tracks[0]
+            segment = track.segments[0]
+            # Load the data into a Pandas dataframe (by way of a list)
+            data = []
+            #segment_length = segment.length_3d()
+            for point_idx, point in enumerate(segment.points):
+                data.append([point.longitude, point.latitude,point.elevation,point.time, segment.get_speed(point_idx)])
+                columns = ['Longitude', 'Latitude', 'Altitude', 'Time', 'Speed']
+                df = pd.DataFrame(data, columns=columns)
+            #2(make points tuple for line)
+            points = []
+            for track in gpx.tracks:
+                for segment in track.segments: 
+                    for point in segment.points:
+                        points.append(tuple([point.latitude, point.longitude]))   
+            mappa = folium.Map(location=[df.Latitude.mean(), df.Longitude.mean()], tiles=None, zoom_start=10, control_scale=True, control=True)
+            track = folium.PolyLine(points, color="blue", weight=5, popup="Track")
+            track.add_to(mappa)
+            folium.TileLayer('openstreetmap', name='OpenStreetMap').add_to(mappa)
+            folium.TileLayer('stamenterrain', name='Terrain').add_to(mappa)
+            folium.TileLayer('Stamen Toner', name='Black&White').add_to(mappa)
+            folium.LayerControl().add_to(mappa)
+            mappa.add_child(folium.LatLngPopup())
+            mappa.save(selfolder.Home_dir + "/index.html", 'w')
+        except IndexError:
+            GPXtoCSV()
+            forGPX(selfolder.Home_dir + "/Output.csv", selfolder.Home_dir + "/Output.gpx")
+            GPSfile= selfolder.Home_dir + "/Output.gpx"
+            gpx = gpxpy.parse(open(GPSfile)) 
+            #(1)make DataFrame
+            track = gpx.tracks[0]
+            segment = track.segments[0]
+            # Load the data into a Pandas dataframe (by way of a list)
+            data = []
+            #segment_length = segment.length_3d()
+            for point_idx, point in enumerate(segment.points):
+                data.append([point.longitude, point.latitude,point.elevation,point.time, segment.get_speed(point_idx)])
+                columns = ['Longitude', 'Latitude', 'Altitude', 'Time', 'Speed']
+                df = pd.DataFrame(data, columns=columns)
+            #2(make points tuple for line)
+            points = []
+            for track in gpx.tracks:
+                for segment in track.segments: 
+                    for point in segment.points:
+                        points.append(tuple([point.latitude, point.longitude]))   
+            mappa = folium.Map(location=[df.Latitude.mean(), df.Longitude.mean()], tiles=None, zoom_start=10, control_scale=True, control=True)
+            track = folium.PolyLine(points, color="blue", weight=5, popup="Track")
+            track.add_to(mappa)
+            folium.TileLayer('openstreetmap', name='OpenStreetMap').add_to(mappa)
+            folium.TileLayer('stamenterrain', name='Terrain').add_to(mappa)
+            folium.TileLayer('Stamen Toner', name='Black&White').add_to(mappa)
+            folium.LayerControl().add_to(mappa)
+            mappa.add_child(folium.LatLngPopup())
+            mappa.save(selfolder.Home_dir + "/index.html", 'w')
+            os.remove(selfolder.Home_dir + "/Output.csv")
+            os.rename(selfolder.Home_dir + "/Output.gpx", selfolder.Home_dir + "/newInput.gpx")
+
+
     def htmlrender():
         generate_html()
         hti = Html2Image()
@@ -667,7 +711,8 @@ def main(args=None):
         factor = 10 #increase contrast
         im_output = enhancer.enhance(factor)
         im_output.save(selfolder.Home_dir + "/MAP.png")
-   
+
+
     def previewfromhtml():
         generate_html()
         htmlrender()
@@ -680,7 +725,8 @@ def main(args=None):
         img.image = render
         img.grid(column=0, row=0)
         os.remove(selfolder.Home_dir + "/index.html")
-        
+
+
     def CSVtoGMTmap():
         CSVfile = selfile.input_file
         lats = []
@@ -765,6 +811,7 @@ def main(args=None):
         ###############################################
         fig.savefig(selfolder.Home_dir + "/MAPgmtfromCSV.png",  transparent=False, crop=True, anti_alias=True, dpi=300)
 
+
     def viewGMTcsv():
         CSVtoGMTmap()
         imfix = PIL.Image.open(selfolder.Home_dir + "/MAPgmtfromCSV.png")
@@ -775,6 +822,7 @@ def main(args=None):
         img = Label(windowpop, image=render)
         img.image = render
         img.grid(column=0, row=0)
+
 
     def GPXtoGMTmap():
         try:
@@ -957,7 +1005,6 @@ def main(args=None):
             os.rename(selfolder.Home_dir + "/Output.gpx", selfolder.Home_dir + "/newInput.gpx")
 
 
-
     def viewGMTgpx():
         GPXtoGMTmap()
         imfix = PIL.Image.open(selfolder.Home_dir + "/MAPgmtfromGPX.png")
@@ -968,7 +1015,8 @@ def main(args=None):
         img = Label(windowpop, image=render)
         img.image = render
         img.grid(column=0, row=0)
-        
+
+
     def publish_map():
         source = selfolder.Home_dir + "/index.html"
         target = selfolder.Home_dir + "/WebAPP/templates/"
@@ -1013,6 +1061,7 @@ if __name__ == '__main__':
     btn.pack()
     ###
 
+
     ### TAB 2
     space = Label(tab2, text="")
     space.pack()
@@ -1049,9 +1098,6 @@ if __name__ == '__main__':
     btn = Button(tab3, text="GPX TO SHAPE-FILE (POINTS)", bg="orange", command=GPXtoshp_point) 
     btn.pack()
     ##
-
-
-
 
 
     ###TAB 4
