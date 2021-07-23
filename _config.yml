@@ -1,7 +1,7 @@
 theme: jekyll-theme-minimal
-title: "CADS: Copernicus Added Download Services"
+title: "GPSconverter (Global-Positioning-System Converter)"
 email: sammarcocarmelo@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  Python Package capable to add new download services to Copernicus and make easier manage voluminous data requests.
+  Python application to manipulate & view GPS data.
 logo: "GPSconverter/DATA/LOGOproj.png"
 show_downloads: true
