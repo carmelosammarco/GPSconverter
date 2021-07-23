@@ -3,5 +3,5 @@ title: "CADS: Copernicus Added Download Services"
 email: sammarcocarmelo@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Python Package capable to add new download services to Copernicus and make easier manage voluminous data requests.
-logo: "GPSconverter/DATA/icon.png"
+logo: "GPSconverter/DATA/LOGOproj.png"
 show_downloads: true
