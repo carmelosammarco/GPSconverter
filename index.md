@@ -114,10 +114,6 @@ Also if **Elevation** and **Time** are missing in the CSV, the GPX file is gener
 
 I hope you like and you find usefull, here below an usage video (jusck cllick on the image below to be linked to the youtube-video) of what can be considered a small and simple example of the GPSconverter's usage. We start with a CSV file. I will view it before converting it to GPX. I will produce an high quality overview of the GPX data on a topographic map. Then I will convert the GPX file as KML/KMZ  to be easily visualised on Google Earth. I will stop here but much more can be done... It is very intuitive, just explore the tools and If you want to know more just contact me.
 
-<p align="center">
-  <img width="" height="200" src='https://www.youtube.com/watch?v=vOg6ZM473Rs'>
-</p>
-
-[![IMAGE ALT TEXT HERE](https://www.youtube.com/watch?v=vOg6ZM473Rs/0.jpg)](https://www.youtube.com/watch?v=vOg6ZM473Rs)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/vOg6ZM473Rs/0.jpg)](https://www.youtube.com/watch?v=vOg6ZM473Rs)
 
 Enjoy! :)
