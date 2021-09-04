@@ -1,6 +1,6 @@
 # GPSconverter (Global-Positioning-System Converter)
 
-![Build Status](https://app.travis-ci.com/github/carmelosammarco/GPSconverter) ![PyPi](https://img.shields.io/badge/PyPi-Project-yellow.svg)](https://pypi.org/project/GPSconverter/)  
+![Build Status](https://app.travis-ci.com/github/carmelosammarco/GPSconverter) [![PyPi](https://img.shields.io/badge/PyPi-Project-yellow.svg)](https://pypi.org/project/GPSconverter/)  
 
 <p align="center">
   <img width="" height="200" src='https://i.imgur.com/jbCBPkh.png'>
