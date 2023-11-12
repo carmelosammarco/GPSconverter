@@ -37,7 +37,8 @@ setup(name='GPSconverter',
         #'geopandas >= 0.9.0',
         'pyshp >= 2.1.3',
         'matplotlib >= 3.4.2',
-        'pygmt'
+        'pygmt',
+        'pyogrio'
         
         
       ],

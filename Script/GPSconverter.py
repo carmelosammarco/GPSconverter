@@ -27,6 +27,8 @@ from tkmacosx import Button
 import geopandas as gpd
 import pygmt
 
+import pyogrio
+
 def main():
 
     window = Tk()
@@ -201,7 +203,8 @@ def main():
     def GPXtoGEOJSONpoint():
         GPXtoCSV()
         filein = selfolder.Home_dir + "/Output.csv"
-        data_frame = pd.read_csv(filein,infer_datetime_format=True,na_values=[''])
+        #data_frame = pd.read_csv(filein,infer_datetime_format=True,na_values=[''])
+        data_frame = pd.read_csv(filein,na_values=[''])
         json_result_string = data_frame.to_json(orient='records', double_precision=12,date_format='iso')
         json_result = json.loads(json_result_string)
         geojson = {
@@ -250,14 +253,14 @@ def main():
         GPXtoGEOJSONpoint()
         infile = selfolder.Home_dir + "/Points.geojson"
         gdf = gpd.read_file(infile)
-        gdf.to_file(selfolder.Home_dir + "/Points.shp")
+        gdf.to_file(selfolder.Home_dir + "/Points.shp", engine="pyogrio")
         os.remove(selfolder.Home_dir + "/Points.geojson")
     
     def GPXtoshp_line():
         GPXtoGEOJASONtrack()
         infile = selfolder.Home_dir + "/Track.geojson"
         gdf = gpd.read_file(infile)
-        gdf.to_file(selfolder.Home_dir + "/Track.shp")
+        gdf.to_file(selfolder.Home_dir + "/Track.shp", engine="pyogrio")
         os.remove(selfolder.Home_dir + "/Track.geojson")
    
     def GPXtoKmz():
@@ -303,9 +306,9 @@ def main():
         track = folium.PolyLine(points, color="blue", weight=5, popup="Track")
         track.add_to(mappa)
         folium.TileLayer('openstreetmap', name='OpenStreetMap').add_to(mappa)
-        folium.TileLayer('stamenterrain', name='Terrain').add_to(mappa)
-        folium.TileLayer('Stamen Toner', name='Black&White').add_to(mappa)
-        folium.LayerControl().add_to(mappa)
+        #folium.TileLayer('stamenterrain', name='Terrain').add_to(mappa)
+        #folium.TileLayer('Stamen Toner', name='Black&White').add_to(mappa)
+        #folium.LayerControl().add_to(mappa)
         mappa.add_child(folium.LatLngPopup())
         mappa.save(selfolder.Home_dir + "/index.html", 'w')
     
@@ -555,6 +558,8 @@ if __name__ == '__main__':
         f.write(script)
         f.close()   
         os.chdir(selfolder.Home_dir + "/WebAPP/")
+        env = os.system("which python")
+        print(env)
         os.system("python FlaskApp.py")
 
     
